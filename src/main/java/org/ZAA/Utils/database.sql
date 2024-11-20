@@ -9,7 +9,9 @@ DROP TABLE IF EXISTS Sales CASCADE;
 DROP TABLE IF EXISTS Products CASCADE;
 DROP TABLE IF EXISTS Vendors CASCADE;
 DROP TABLE IF EXISTS Users CASCADE;
+DROP TABLE IF EXISTS BranchManagers CASCADE;
 DROP TABLE IF EXISTS Branches CASCADE;
+
 
 -- Create Super Admin Table
 CREATE TABLE SuperAdmin (
@@ -17,7 +19,6 @@ CREATE TABLE SuperAdmin (
       Name VARCHAR(100) NOT NULL,
       Email VARCHAR(100) UNIQUE NOT NULL,
       Password VARCHAR(255) NOT NULL,
-      CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
 -- Create Branches Table
@@ -30,21 +31,45 @@ CREATE TABLE Branches (
       Phone VARCHAR(20) NOT NULL,
       NumEmployees INTEGER DEFAULT 0,
       IsActive BOOLEAN DEFAULT TRUE,
-      CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+--Create Branch Manager Table
+CREATE TABLE BranchManagers (
+        ManagerID SERIAL PRIMARY KEY,
+        Name VARCHAR(100) NOT NULL,
+        EmployeeNo VARCHAR(20) UNIQUE NOT NULL,
+        Email VARCHAR(100) UNIQUE NOT NULL,
+        Password VARCHAR(255) NOT NULL,
+        BranchCode VARCHAR(20) NOT NULL,
+        Salary DECIMAL(10, 2),
+        ContactPhone VARCHAR(20),
+        IsActive BOOLEAN DEFAULT TRUE,
+        FOREIGN KEY (BranchCode) REFERENCES Branches(BranchCode)
+);
+
+
 -- Create Users Table
-CREATE TABLE Users (
+CREATE TABLE Cashier (
        UserID SERIAL PRIMARY KEY,
        Name VARCHAR(100) NOT NULL,
        EmployeeNo VARCHAR(20) UNIQUE NOT NULL,
        Email VARCHAR(100) UNIQUE NOT NULL,
        Password VARCHAR(255) NOT NULL,
-       Role VARCHAR(30) NOT NULL CHECK (Role IN ('BranchManager', 'Cashier', 'DataEntryOperator')),
        BranchCode VARCHAR(20),
        Salary DECIMAL(10, 2),
-       FirstLoginDate TIMESTAMP,
-       LastLoginDate TIMESTAMP,
+       IsActive BOOLEAN DEFAULT TRUE,
+       FOREIGN KEY (BranchCode) REFERENCES Branches(BranchCode)
+);
+
+CREATE TABLE DataEntryOperator (
+       UserID SERIAL PRIMARY KEY,
+       Name VARCHAR(100) NOT NULL,
+       EmployeeNo VARCHAR(20) UNIQUE NOT NULL,
+       Email VARCHAR(100) UNIQUE NOT NULL,
+       Password VARCHAR(255) NOT NULL,
+       Role VARCHAR(30) NOT NULL CHECK (Role IN ('Cashier', 'DataEntryOperator')),
+       BranchCode VARCHAR(20),
+       Salary DECIMAL(10, 2),
        IsActive BOOLEAN DEFAULT TRUE,
        FOREIGN KEY (BranchCode) REFERENCES Branches(BranchCode)
 );
@@ -110,11 +135,3 @@ CREATE INDEX idx_products_vendor ON Products(VendorID);
 CREATE INDEX idx_sales_product ON Sales(ProductID);
 CREATE INDEX idx_sales_branch ON Sales(BranchCode);
 CREATE INDEX idx_reports_branch ON Reports(BranchCode);
-
--- Comments for Table Descriptions
-COMMENT ON TABLE Branches IS 'Stores information about different branch locations';
-COMMENT ON TABLE Users IS 'Manages user accounts with different roles';
-COMMENT ON TABLE Vendors IS 'Maintains vendor information';
-COMMENT ON TABLE Products IS 'Tracks product details and inventory';
-COMMENT ON TABLE Sales IS 'Records all sales transactions';
-COMMENT ON TABLE Reports IS 'Generates and stores various types of reports';
