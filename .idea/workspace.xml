@@ -38,7 +38,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.METRO_POS_MAIN_CONTROLLER_CODE.executor": "Profiler#1",
+    "Application.METRO_POS_MAIN_CONTROLLER_CODE.executor": "Run",
     "Application.Main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "azfar",
@@ -115,7 +115,15 @@
       <option name="project" value="LOCAL" />
       <updated>1732110897573</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Implemented Backend Object classes and Login, Signup and Branch creation functions.">
+      <option name="closed" value="true" />
+      <created>1732111312955</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1732111312955</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
