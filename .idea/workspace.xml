@@ -4,21 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ea2db64-6a30-4e9f-adef-6222c9bc4c94" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/Bill.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/Branch.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/BranchManagement.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/BranchManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/Cashier.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/DataEntryOperator.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/METRO_POS_MAIN_CONTROLLER_CODE.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/Product.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/Report.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/SuperAdmin.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/Vendor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+    <list default="true" id="4ea2db64-6a30-4e9f-adef-6222c9bc4c94" name="Changes" comment="Implemented Backend Object classes and Login, Signup and Branch creation functions.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -39,6 +26,7 @@
       </map>
     </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -50,7 +38,7 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
-    "Application.METRO_POS_MAIN_CONTROLLER_CODE.executor": "Run",
+    "Application.METRO_POS_MAIN_CONTROLLER_CODE.executor": "Profiler#1",
     "Application.Main.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "git-widget-placeholder": "azfar",
@@ -119,6 +107,15 @@
       <workItem from="1732102971788" duration="1421000" />
       <workItem from="1732104456965" duration="5841000" />
     </task>
+    <task id="LOCAL-00001" summary="Implemented Backend Object classes and Login, Signup and Branch creation functions.">
+      <option name="closed" value="true" />
+      <created>1732110897573</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1732110897573</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -146,5 +143,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Implemented Backend Object classes and Login, Signup and Branch creation functions." />
+    <option name="LAST_COMMIT_MESSAGE" value="Implemented Backend Object classes and Login, Signup and Branch creation functions." />
   </component>
 </project>
