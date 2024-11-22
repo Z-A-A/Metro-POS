@@ -1,15 +1,16 @@
 package org.ZAA.Controller;
 
-
 import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
+@RestController
+@RequestMapping("/api")
 public class SuperAdmin
 {
     private String name;
     private String email;
     private String password;
-
-    private List<BranchManagement> branchManagementList;
+    private METRO_POS_MAIN_CONTROLLER_CODE mainController;
 
     public SuperAdmin(String name, String email, String password)
     {
@@ -33,10 +34,6 @@ public class SuperAdmin
         return password;
     }
 
-    public void setBranchManagementList(List<BranchManagement> branchManagementList) {
-        this.branchManagementList = branchManagementList;
-    }
-
     public void setEmail(String email) {
         this.email = email;
     }
@@ -49,13 +46,17 @@ public class SuperAdmin
         this.password = password;
     }
 
-    public void createBranch(String branchCode, String name, String city, boolean isActive, String address, String phone)
-    {
-        Branch newBranch = new Branch(branchCode, name, city, isActive, address, phone);
-        BranchManagement newBranchManagement = new BranchManagement(newBranch);
-        branchManagementList.add(newBranchManagement);
-        System.out.println("BRANCH CREATED SUCCESSFULLY: " + name);
+    public void setMainController(METRO_POS_MAIN_CONTROLLER_CODE mainController) {
+        this.mainController = mainController;
     }
 
-
+    @PostMapping("/createBranch")
+    public boolean createBranch(@RequestParam String branchCode, @RequestParam String name, @RequestParam String city, @RequestParam boolean isActive, @RequestParam String address, @RequestParam String phone) {
+        Branch newBranch = new Branch(branchCode, name, city, isActive, address, phone);
+        BranchManagement newBranchManagement = new BranchManagement(newBranch);
+        mainController.getBranches().add(newBranchManagement);
+        //UPDATE IN DB HERE
+        System.out.println("BRANCH CREATED SUCCESSFULLY: " + name);
+        return true;
+    }
 }

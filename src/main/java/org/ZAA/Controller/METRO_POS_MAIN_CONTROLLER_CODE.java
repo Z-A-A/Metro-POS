@@ -1,21 +1,23 @@
 package org.ZAA.Controller;
 
 import java.util.*;
+import org.springframework.web.bind.annotation.*;
 
+@RestController
+@RequestMapping("/api")
 public class METRO_POS_MAIN_CONTROLLER_CODE
 {
     private List<SuperAdmin> superAdmins;
-    private Map<String, BranchManagement> branches;
+    private List<BranchManagement> branches;
 
     private List<BranchManager> admins;
     private List<Cashier> cashiers;
     private List<DataEntryOperator> dataEntryOperators;
 
-
     public METRO_POS_MAIN_CONTROLLER_CODE()
     {
         this.superAdmins = new ArrayList<>();
-        this.branches = new HashMap<>();
+        this.branches = new ArrayList<>();
         this.admins = new ArrayList<>();
         this.cashiers = new ArrayList<>();
         this.dataEntryOperators = new ArrayList<>();
@@ -32,42 +34,58 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
         //STORE DATA COLLECTIONS INTO
     }
 
-
     //TESTING METHOD.
     public void TEST_LOAD_WITHOUT_DB()
     {
         SuperAdmin superAdmin1 = new SuperAdmin("Admin1", "admin1@example.com", "admin123");
+        superAdmin1.setMainController(this);
         SuperAdmin superAdmin2 = new SuperAdmin("Admin2", "admin2@example.com", "admin123");
+        superAdmin2.setMainController(this);
         superAdmins.add(superAdmin1);
         superAdmins.add(superAdmin2);
         System.out.println("SUPER ADMINS LOADED SUCCESSFULLY");
+
         Branch branch1 = new Branch("B001", "Main Branch", "City A", true, "123 Street", "123-456-7890");
         BranchManagement branchManagement1 = new BranchManagement(branch1);
         Branch branch2 = new Branch("B002", "Secondary Branch", "City B", true, "456 Avenue", "987-654-3210");
         BranchManagement branchManagement2 = new BranchManagement(branch2);
-        branches.put("B001", branchManagement1);
-        branches.put("B002", branchManagement2);
+        branches.add(branchManagement1);
+        branches.add(branchManagement2);
         System.out.println("BRANCHES LOADED SUCCESSFULLY");
+
         BranchManager branchManager1 = new BranchManager("Alice", 101, "alice@example.com", "B001", 50000);
+        branchManager1.setMainController(this);
         branchManagement1.addBranchManager(branchManager1);
+        admins.add(branchManager1);
+
         BranchManager branchManager2 = new BranchManager("Bob", 102, "bob@example.com", "B002", 55000);
+        branchManager2.setMainController(this);
         branchManagement2.addBranchManager(branchManager2);
+        admins.add(branchManager2);
+
         Cashier cashier1 = new Cashier("John", 201, "john@example.com", "B001", 30000);
         branchManagement1.addCashier(cashier1);
+        cashiers.add(cashier1);
+
         Cashier cashier2 = new Cashier("Jane", 202, "jane@example.com", "B002", 32000);
         branchManagement2.addCashier(cashier2);
+        cashiers.add(cashier2);
+
         DataEntryOperator dataEntryOperator1 = new DataEntryOperator("Charlie", 301, "charlie@example.com", "B001", 25000);
         branchManagement1.addDataEntryOperator(dataEntryOperator1);
+        dataEntryOperators.add(dataEntryOperator1);
+
         DataEntryOperator dataEntryOperator2 = new DataEntryOperator("David", 302, "david@example.com", "B002", 27000);
         branchManagement2.addDataEntryOperator(dataEntryOperator2);
+        dataEntryOperators.add(dataEntryOperator2);
+
         System.out.println("BRANCH DATA LOADED SUCCESSFULLY");
     }
 
-
     //LOGIN METHODS FOR GUI.
 
-    public SuperAdmin loginSuperAdmin(String email, String password)
-    {
+    @GetMapping("/login/superadmin")
+    public SuperAdmin loginSuperAdmin(@RequestParam String email, @RequestParam String password) {
         for (SuperAdmin superAdmin : superAdmins) {
             if (superAdmin.getEmail().equals(email) && superAdmin.getPassword().equals(password)) {
                 System.out.println("SUPER ADMIN LOGIN SUCCESSFUL");
@@ -78,20 +96,20 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
         return null;
     }
 
-    public BranchManager loginAdmin(String email, String password)
-    {
-        for (BranchManager branchManager : admins) {
-            if (branchManager.getEmail().equals(email) && branchManager.getPassword().equals(password)) {
+    @GetMapping("/login/admin")
+    public BranchManager loginAdmin(@RequestParam String email, @RequestParam String password) {
+        for (BranchManager admin : admins) {
+            if (admin.getEmail().equals(email) && admin.getPassword().equals(password)) {
                 System.out.println("BRANCH MANAGER LOGIN SUCCESSFUL");
-                return branchManager;
+                return admin;
             }
         }
         System.out.println("BRANCH MANAGER LOGIN FAILED");
         return null;
     }
 
-    public Cashier loginCashier(String email, String password)
-    {
+    @GetMapping("/login/cashier")
+    public Cashier loginCashier(@RequestParam String email, @RequestParam String password) {
         for (Cashier cashier : cashiers) {
             if (cashier.getEmail().equals(email) && cashier.getPassword().equals(password)) {
                 System.out.println("CASHIER LOGIN SUCCESSFUL");
@@ -102,8 +120,8 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
         return null;
     }
 
-    public DataEntryOperator loginDataEntryOperator(String email, String password)
-    {
+    @GetMapping("/login/dataentryoperator")
+    public DataEntryOperator loginDataEntryOperator(@RequestParam String email, @RequestParam String password) {
         for (DataEntryOperator dataEntryOperator : dataEntryOperators) {
             if (dataEntryOperator.getEmail().equals(email) && dataEntryOperator.getPassword().equals(password)) {
                 System.out.println("DATA ENTRY OPERATOR LOGIN SUCCESSFUL");
@@ -113,7 +131,6 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
         System.out.println("DATA ENTRY OPERATOR LOGIN FAILED");
         return null;
     }
-
 
     //SIGN UP METHODS FOR GUI.
 
@@ -131,31 +148,90 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
         System.out.println("SUPER ADMIN SIGN UP SUCCESSFUL: " + newSuperAdmin.getName());
     }
 
-    public void signUpBranchManager(String name, String email, String password, String branchCode, double salary)
-    {
+    @PostMapping("/signup/branchmanager")
+    public boolean signUpBranchManager(@RequestParam String name, @RequestParam String email, @RequestParam String password, @RequestParam String branchCode, @RequestParam double salary) {
         BranchManager newBranchManager = new BranchManager(name, admins.size() + 1, email, branchCode, salary);
         admins.add(newBranchManager);
-        //ALSO ADD IN DATABASEEE HERE ===============================
+        // ALSO ADD IN DATABASEEE HERE ===============================
         System.out.println("ADMIN (BRANCH MANAGER) ADDED SUCCESSFULLY: " + newBranchManager.getName());
+        return true;
     }
 
-    public void signUpCashier(String name, String email, String password, String branchCode, double salary)
-    {
+    @PostMapping("/signup/cashier")
+    public boolean signUpCashier(@RequestParam String name, @RequestParam String email, @RequestParam String password, @RequestParam String branchCode, @RequestParam double salary) {
         Cashier newCashier = new Cashier(name, cashiers.size() + 1, email, branchCode, salary);
         cashiers.add(newCashier);
-        //ALSO ADD IN DATABASEEEEE HERE================================
+        // ALSO ADD IN DATABASEEEEE HERE ===============================
         System.out.println("CASHIER ADDED SUCCESSFULLY: " + newCashier.getName());
+        return true;
     }
 
-    public void signUpDataEntryOperator(String name, String email, String password, String branchCode, double salary)
-    {
+    @PostMapping("/signup/dataentryoperator")
+    public boolean signUpDataEntryOperator(@RequestParam String name, @RequestParam String email, @RequestParam String password, @RequestParam String branchCode, @RequestParam double salary) {
         DataEntryOperator newDataEntryOperator = new DataEntryOperator(name, dataEntryOperators.size() + 1, email, branchCode, salary);
         dataEntryOperators.add(newDataEntryOperator);
-        //ALSO ADD IN DATABASEEE HERE===================================
+        // ALSO ADD IN DATABASEEE HERE ===============================
         System.out.println("DATA ENTRY OPERATOR ADDED SUCCESSFULLY: " + newDataEntryOperator.getName());
+        return true;
     }
 
+    //PASSWORD CHANGE METHODS FOR GUI.
 
+    @PostMapping("/changePassword/superadmin")
+    public boolean changeSuperAdminPassword(@RequestParam String email, @RequestParam String oldPassword, @RequestParam String newPassword) {
+        for (SuperAdmin superAdmin : superAdmins) {
+            if (superAdmin.getEmail().equals(email) && superAdmin.getPassword().equals(oldPassword)) {
+                superAdmin.setPassword(newPassword);
+                //CHANGE IN DB HERE==============================
+                System.out.println("SUPER ADMIN PASSWORD CHANGED SUCCESSFULLY");
+                return true;
+            }
+        }
+        System.out.println("SUPER ADMIN PASSWORD CHANGE FAILED");
+        return false;
+    }
+
+    @PostMapping("/changePassword/branchmanager")
+    public boolean changeBranchManagerPassword(@RequestParam String email, @RequestParam String oldPassword, @RequestParam String newPassword) {
+        for (BranchManager admin : admins) {
+            if (admin.getEmail().equals(email) && admin.getPassword().equals(oldPassword)) {
+                admin.setPassword(newPassword);
+                //CHANGE IN DB HERE==============================
+                System.out.println("BRANCH MANAGER PASSWORD CHANGED SUCCESSFULLY");
+                return true;
+            }
+        }
+        System.out.println("BRANCH MANAGER PASSWORD CHANGE FAILED");
+        return false;
+    }
+
+    @PostMapping("/changePassword/cashier")
+    public boolean changeCashierPassword(@RequestParam String email, @RequestParam String oldPassword, @RequestParam String newPassword) {
+        for (Cashier cashier : cashiers) {
+            if (cashier.getEmail().equals(email) && cashier.getPassword().equals(oldPassword)) {
+                cashier.setPassword(newPassword);
+                //CHANGE IN DB HERE==============================
+                System.out.println("CASHIER PASSWORD CHANGED SUCCESSFULLY");
+                return true;
+            }
+        }
+        System.out.println("CASHIER PASSWORD CHANGE FAILED");
+        return false;
+    }
+
+    @PostMapping("/changePassword/dataentryoperator")
+    public boolean changeDataEntryOperatorPassword(@RequestParam String email, @RequestParam String oldPassword, @RequestParam String newPassword) {
+        for (DataEntryOperator dataEntryOperator : dataEntryOperators) {
+            if (dataEntryOperator.getEmail().equals(email) && dataEntryOperator.getPassword().equals(oldPassword)) {
+                dataEntryOperator.setPassword(newPassword);
+                //CHANGE IN DB HERE==============================
+                System.out.println("DATA ENTRY OPERATOR PASSWORD CHANGED SUCCESSFULLY");
+                return true;
+            }
+        }
+        System.out.println("DATA ENTRY OPERATOR PASSWORD CHANGE FAILED");
+        return false;
+    }
 
     public List<BranchManager> getAdmins() {
         return admins;
@@ -165,11 +241,11 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
         this.admins = admins;
     }
 
-    public Map<String, BranchManagement> getBranches() {
+    public List<BranchManagement> getBranches() {
         return branches;
     }
 
-    public void setBranches(Map<String, BranchManagement> branches) {
+    public void setBranches(List<BranchManagement> branches) {
         this.branches = branches;
     }
 
@@ -197,7 +273,6 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
         this.superAdmins = superAdmins;
     }
 
-
     public static void main(String[] args)
     {
         METRO_POS_MAIN_CONTROLLER_CODE controller = new METRO_POS_MAIN_CONTROLLER_CODE();
@@ -221,7 +296,6 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
             switch (choice)
             {
                 case 1:
-
                     System.out.println("Enter Super Admin Email: ");
                     String superAdminEmail = scanner.nextLine();
                     System.out.println("Enter Super Admin Password: ");
@@ -242,7 +316,6 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
                         switch (superAdminChoice)
                         {
                             case 1:
-
                                 System.out.println("Enter Branch Code: ");
                                 String branchCode = scanner.nextLine();
                                 System.out.println("Enter Branch Name: ");
@@ -258,7 +331,6 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
                                 superAdmin.createBranch(branchCode, branchName, branchCity, branchActive, branchAddress, branchPhone);
                                 break;
                             case 2:
-                                // Super Admin adds Branch Manager
                                 System.out.println("Enter Name: ");
                                 String adminName = scanner.nextLine();
                                 System.out.println("Enter Email: ");
@@ -272,7 +344,6 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
                                 controller.signUpBranchManager(adminName, adminEmail, adminPassword, adminBranchCode, adminSalary);
                                 break;
                             case 3:
-                                // Super Admin adds Cashier
                                 System.out.println("Enter Name: ");
                                 String cashierName = scanner.nextLine();
                                 System.out.println("Enter Email: ");
@@ -286,7 +357,6 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
                                 controller.signUpCashier(cashierName, cashierEmail, cashierPassword, cashierBranchCode, cashierSalary);
                                 break;
                             case 4:
-                                // Super Admin adds Data Entry Operator
                                 System.out.println("Enter Name: ");
                                 String dataEntryName = scanner.nextLine();
                                 System.out.println("Enter Email: ");
@@ -300,7 +370,6 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
                                 controller.signUpDataEntryOperator(dataEntryName, dataEntryEmail, dataEntryPassword, dataEntryBranchCode, dataEntrySalary);
                                 break;
                             case 5:
-                                // Logout
                                 System.out.println("Logging out...");
                                 break;
                             default:
@@ -310,7 +379,6 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
                     break;
 
                 case 2:
-                    // Branch Manager Login
                     System.out.println("Enter Branch Manager Email: ");
                     String managerEmail = scanner.nextLine();
                     System.out.println("Enter Branch Manager Password: ");
@@ -323,39 +391,32 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
                         System.out.println("3. Logout");
                         System.out.print("Enter your choice: ");
                         int managerChoice = scanner.nextInt();
-                        scanner.nextLine(); // Consume newline
+                        scanner.nextLine();
 
                         switch (managerChoice) {
                             case 1:
-                                // Branch Manager adds Cashier
                                 System.out.println("Enter Name: ");
                                 String cashierNameBM = scanner.nextLine();
                                 System.out.println("Enter Email: ");
                                 String cashierEmailBM = scanner.nextLine();
                                 System.out.println("Enter Password: ");
                                 String cashierPasswordBM = scanner.nextLine();
-                                System.out.println("Enter Branch Code: ");
-                                String cashierBranchCodeBM = scanner.nextLine();
                                 System.out.println("Enter Salary: ");
                                 double cashierSalaryBM = scanner.nextDouble();
-                                controller.signUpCashier(cashierNameBM, cashierEmailBM, cashierPasswordBM, cashierBranchCodeBM, cashierSalaryBM);
+                                branchManager.addCashier(cashierNameBM, cashierEmailBM, cashierPasswordBM, cashierSalaryBM);
                                 break;
                             case 2:
-                                // Branch Manager adds Data Entry Operator
                                 System.out.println("Enter Name: ");
                                 String dataEntryNameBM = scanner.nextLine();
                                 System.out.println("Enter Email: ");
                                 String dataEntryEmailBM = scanner.nextLine();
                                 System.out.println("Enter Password: ");
                                 String dataEntryPasswordBM = scanner.nextLine();
-                                System.out.println("Enter Branch Code: ");
-                                String dataEntryBranchCodeBM = scanner.nextLine();
                                 System.out.println("Enter Salary: ");
                                 double dataEntrySalaryBM = scanner.nextDouble();
-                                controller.signUpDataEntryOperator(dataEntryNameBM, dataEntryEmailBM, dataEntryPasswordBM, dataEntryBranchCodeBM, dataEntrySalaryBM);
+                                branchManager.addDataEntryOperator(dataEntryNameBM, dataEntryEmailBM, dataEntryPasswordBM, dataEntrySalaryBM);
                                 break;
                             case 3:
-                                // Logout
                                 System.out.println("Logging out...");
                                 break;
                             default:
@@ -365,7 +426,6 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
                     break;
 
                 case 3:
-                    // Cashier Login
                     System.out.println("Enter Cashier Email: ");
                     String cashierEmailLogin = scanner.nextLine();
                     System.out.println("Enter Cashier Password: ");
@@ -378,7 +438,6 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
                     break;
 
                 case 4:
-                    // Data Entry Operator Login
                     System.out.println("Enter Data Entry Operator Email: ");
                     String dataEntryEmailLogin = scanner.nextLine();
                     System.out.println("Enter Data Entry Operator Password: ");
@@ -391,7 +450,6 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
                     break;
 
                 case 5:
-                    // Exit
                     System.out.println("Exiting...");
                     return;
 

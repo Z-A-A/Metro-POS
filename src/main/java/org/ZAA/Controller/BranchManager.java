@@ -1,5 +1,9 @@
 package org.ZAA.Controller;
 
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api")
 public class BranchManager
 {
     private String name;
@@ -8,6 +12,7 @@ public class BranchManager
     private String password;
     private String branchCode;
     private double salary;
+    private METRO_POS_MAIN_CONTROLLER_CODE mainController;
 
     public BranchManager(String name, int employeeNumber, String email, String branchCode, double salary)
     {
@@ -65,5 +70,41 @@ public class BranchManager
 
     public void setSalary(double salary) {
         this.salary = salary;
+    }
+
+    public void setMainController(METRO_POS_MAIN_CONTROLLER_CODE mainController) {
+        this.mainController = mainController;
+    }
+
+    @PostMapping("/addCashier")
+    public boolean addCashier(@RequestParam String name, @RequestParam String email, @RequestParam String password, @RequestParam double salary) {
+        Cashier newCashier = new Cashier(name, mainController.getCashiers().size() + 1, email, branchCode, salary);
+        mainController.getCashiers().add(newCashier);
+        for (BranchManagement branchManagement : mainController.getBranches()) {
+            if (branchManagement.getBranch().getBranchCode().equals(branchCode)) {
+                branchManagement.addCashier(newCashier);
+                // Add to DB here
+                System.out.println("CASHIER ADDED SUCCESSFULLY: " + newCashier.getName());
+                return true;
+            }
+        }
+        System.out.println("CASHIER ADDITION FAILED");
+        return false;
+    }
+
+    @PostMapping("/addDataEntryOperator")
+    public boolean addDataEntryOperator(@RequestParam String name, @RequestParam String email, @RequestParam String password, @RequestParam double salary) {
+        DataEntryOperator newDataEntryOperator = new DataEntryOperator(name, mainController.getDataEntryOperators().size() + 1, email, branchCode, salary);
+        mainController.getDataEntryOperators().add(newDataEntryOperator);
+        for (BranchManagement branchManagement : mainController.getBranches()) {
+            if (branchManagement.getBranch().getBranchCode().equals(branchCode)) {
+                branchManagement.addDataEntryOperator(newDataEntryOperator);
+                // Add to DB here
+                System.out.println("DATA ENTRY OPERATOR ADDED SUCCESSFULLY: " + newDataEntryOperator.getName());
+                return true;
+            }
+        }
+        System.out.println("DATA ENTRY OPERATOR ADDITION FAILED");
+        return false;
     }
 }
