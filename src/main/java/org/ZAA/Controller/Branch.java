@@ -5,12 +5,12 @@ public class Branch
     private String branchCode;
     private String name;
     private String city;
-    private boolean isActive;
+    private Boolean isActive;
     private String address;
     private String phone;
-    private int numberOfEmployees;
+    private Integer numberOfEmployees;
 
-    public Branch(String branchCode, String name, String city, boolean isActive, String address, String phone)
+    public Branch(String branchCode, String name, String city, Boolean isActive, String address, String phone)
     {
         this.branchCode = branchCode;
         this.name = name;
@@ -33,7 +33,7 @@ public class Branch
         return city;
     }
 
-    public boolean isActive() {
+    public Boolean isActive() {
         return isActive;
     }
 
@@ -45,7 +45,7 @@ public class Branch
         return phone;
     }
 
-    public int getNumberOfEmployees() {
+    public Integer getNumberOfEmployees() {
         return numberOfEmployees;
     }
 
@@ -53,7 +53,7 @@ public class Branch
         numberOfEmployees++;
     }
 
-    public void setActive(boolean isActive) {
+    public void setActive(Boolean isActive) {
         this.isActive = isActive;
     }
 }
