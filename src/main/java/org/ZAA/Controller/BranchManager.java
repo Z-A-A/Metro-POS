@@ -7,14 +7,19 @@ import org.springframework.web.bind.annotation.*;
 public class BranchManager
 {
     private String name;
-    private int employeeNumber;
+    private Integer employeeNumber;
     private String email;
     private String password;
     private String branchCode;
-    private double salary;
+    private Double salary;
     private METRO_POS_MAIN_CONTROLLER_CODE mainController;
 
-    public BranchManager(String name, int employeeNumber, String email, String branchCode, double salary)
+
+    public BranchManager() {
+        // Default constructor for Spring
+    }
+
+    public BranchManager(String name, Integer employeeNumber, String email, String branchCode, Double salary)
     {
         this.name = name;
         this.employeeNumber = employeeNumber;
@@ -28,7 +33,7 @@ public class BranchManager
         return name;
     }
 
-    public int getEmployeeNumber() {
+    public Integer getEmployeeNumber() {
         return employeeNumber;
     }
 
@@ -44,7 +49,7 @@ public class BranchManager
         return branchCode;
     }
 
-    public double getSalary() {
+    public Double getSalary() {
         return salary;
     }
 
@@ -56,7 +61,7 @@ public class BranchManager
         this.email = email;
     }
 
-    public void setEmployeeNumber(int employeeNumber) {
+    public void setEmployeeNumber(Integer employeeNumber) {
         this.employeeNumber = employeeNumber;
     }
 
@@ -68,7 +73,7 @@ public class BranchManager
         this.password = password;
     }
 
-    public void setSalary(double salary) {
+    public void setSalary(Double salary) {
         this.salary = salary;
     }
 
@@ -77,7 +82,7 @@ public class BranchManager
     }
 
     @PostMapping("/addCashier")
-    public boolean addCashier(@RequestParam String name, @RequestParam String email, @RequestParam String password, @RequestParam double salary) {
+    public boolean addCashier(@RequestParam String name, @RequestParam String email, @RequestParam String password, @RequestParam Double salary) {
         Cashier newCashier = new Cashier(name, mainController.getCashiers().size() + 1, email, branchCode, salary);
         mainController.getCashiers().add(newCashier);
         for (BranchManagement branchManagement : mainController.getBranches()) {
@@ -93,7 +98,7 @@ public class BranchManager
     }
 
     @PostMapping("/addDataEntryOperator")
-    public boolean addDataEntryOperator(@RequestParam String name, @RequestParam String email, @RequestParam String password, @RequestParam double salary) {
+    public boolean addDataEntryOperator(@RequestParam String name, @RequestParam String email, @RequestParam String password, @RequestParam Double salary) {
         DataEntryOperator newDataEntryOperator = new DataEntryOperator(name, mainController.getDataEntryOperators().size() + 1, email, branchCode, salary);
         mainController.getDataEntryOperators().add(newDataEntryOperator);
         for (BranchManagement branchManagement : mainController.getBranches()) {

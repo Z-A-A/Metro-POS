@@ -3,13 +3,18 @@ package org.ZAA.Controller;
 public class DataEntryOperator
 {
     private String name;
-    private int employeeNumber;
+    private Integer employeeNumber;
     private String email;
     private String password;
     private String branchCode;
-    private double salary;
+    private Double salary;
 
-    public DataEntryOperator(String name, int employeeNumber, String email, String branchCode, double salary)
+    public DataEntryOperator()
+    {
+
+    }
+
+    public DataEntryOperator(String name, Integer employeeNumber, String email, String branchCode, Double salary)
     {
         this.name = name;
         this.employeeNumber = employeeNumber;
@@ -23,7 +28,7 @@ public class DataEntryOperator
         return name;
     }
 
-    public int getEmployeeNumber() {
+    public Integer getEmployeeNumber() {
         return employeeNumber;
     }
 
@@ -39,7 +44,7 @@ public class DataEntryOperator
         return branchCode;
     }
 
-    public double getSalary() {
+    public Double getSalary() {
         return salary;
     }
 
@@ -51,7 +56,7 @@ public class DataEntryOperator
         this.email = email;
     }
 
-    public void setEmployeeNumber(int employeeNumber) {
+    public void setEmployeeNumber(Integer employeeNumber) {
         this.employeeNumber = employeeNumber;
     }
 
@@ -63,7 +68,7 @@ public class DataEntryOperator
         this.password = password;
     }
 
-    public void setSalary(double salary) {
+    public void setSalary(Double salary) {
         this.salary = salary;
     }
 }

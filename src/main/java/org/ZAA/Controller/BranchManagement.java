@@ -10,6 +10,12 @@ public class BranchManagement
     private List<Cashier> cashiers;
     private List<DataEntryOperator> dataEntryOperators;
 
+    public BranchManagement()
+    {
+
+    }
+
+
     public BranchManagement(Branch branch) {
         this.branch = branch;
         this.branchManagers = new ArrayList<>();

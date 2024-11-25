@@ -1,7 +1,10 @@
 package org.ZAA.Controller;
 
 import java.util.*;
+
+import jakarta.annotation.PostConstruct;
 import org.springframework.web.bind.annotation.*;
+
 
 @RestController
 @RequestMapping("/api")
@@ -23,10 +26,15 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
         this.dataEntryOperators = new ArrayList<>();
     }
 
+    @PostConstruct
     public void loadData()
     {
         // LOAD DATA FROM DATABASE INTO LISTS.
         TEST_LOAD_WITHOUT_DB();
+        for(SuperAdmin superAdmin: superAdmins)
+        {
+            System.out.println(superAdmin.getName());
+        }
     }
 
     public void syncDataToDataBase()
@@ -35,8 +43,7 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
     }
 
     //TESTING METHOD.
-    public void TEST_LOAD_WITHOUT_DB()
-    {
+    public void TEST_LOAD_WITHOUT_DB() {
         SuperAdmin superAdmin1 = new SuperAdmin("Admin1", "admin1@example.com", "admin123");
         superAdmin1.setMainController(this);
         SuperAdmin superAdmin2 = new SuperAdmin("Admin2", "admin2@example.com", "admin123");
@@ -53,29 +60,29 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
         branches.add(branchManagement2);
         System.out.println("BRANCHES LOADED SUCCESSFULLY");
 
-        BranchManager branchManager1 = new BranchManager("Alice", 101, "alice@example.com", "B001", 50000);
+        BranchManager branchManager1 = new BranchManager("Alice", 101, "alice@example.com", "B001", 50000.0);
         branchManager1.setMainController(this);
         branchManagement1.addBranchManager(branchManager1);
         admins.add(branchManager1);
 
-        BranchManager branchManager2 = new BranchManager("Bob", 102, "bob@example.com", "B002", 55000);
+        BranchManager branchManager2 = new BranchManager("Bob", 102, "bob@example.com", "B002", 55000.0);
         branchManager2.setMainController(this);
         branchManagement2.addBranchManager(branchManager2);
         admins.add(branchManager2);
 
-        Cashier cashier1 = new Cashier("John", 201, "john@example.com", "B001", 30000);
+        Cashier cashier1 = new Cashier("John", 201, "john@example.com", "B001", 30000.0);
         branchManagement1.addCashier(cashier1);
         cashiers.add(cashier1);
 
-        Cashier cashier2 = new Cashier("Jane", 202, "jane@example.com", "B002", 32000);
+        Cashier cashier2 = new Cashier("Jane", 202, "jane@example.com", "B002", 32000.0);
         branchManagement2.addCashier(cashier2);
         cashiers.add(cashier2);
 
-        DataEntryOperator dataEntryOperator1 = new DataEntryOperator("Charlie", 301, "charlie@example.com", "B001", 25000);
+        DataEntryOperator dataEntryOperator1 = new DataEntryOperator("Charlie", 301, "charlie@example.com", "B001", 25000.0);
         branchManagement1.addDataEntryOperator(dataEntryOperator1);
         dataEntryOperators.add(dataEntryOperator1);
 
-        DataEntryOperator dataEntryOperator2 = new DataEntryOperator("David", 302, "david@example.com", "B002", 27000);
+        DataEntryOperator dataEntryOperator2 = new DataEntryOperator("David", 302, "david@example.com", "B002", 27000.0);
         branchManagement2.addDataEntryOperator(dataEntryOperator2);
         dataEntryOperators.add(dataEntryOperator2);
 
@@ -86,7 +93,8 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
 
     @GetMapping("/login/superadmin")
     public SuperAdmin loginSuperAdmin(@RequestParam String email, @RequestParam String password) {
-        for (SuperAdmin superAdmin : superAdmins) {
+        for (SuperAdmin superAdmin : superAdmins)
+        {
             if (superAdmin.getEmail().equals(email) && superAdmin.getPassword().equals(password)) {
                 System.out.println("SUPER ADMIN LOGIN SUCCESSFUL");
                 return superAdmin;
