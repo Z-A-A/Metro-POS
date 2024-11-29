@@ -1,5 +1,7 @@
 package org.ZAA.backend.Controller;
 
+import org.ZAA.Controller.SuperAdmin;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -23,11 +25,7 @@ public class SuperAdminController {
             ResultSet resultSet = preparedStatement.executeQuery();
 
             if (resultSet.next()) {
-                superAdmin = new SuperAdmin();
-                superAdmin.setSuperAdminID(resultSet.getInt("SuperAdminID"));
-                superAdmin.setName(resultSet.getString("Name"));
-                superAdmin.setEmail(resultSet.getString("Email"));
-                superAdmin.setPassword(resultSet.getString("Password"));
+                superAdmin = new SuperAdmin(resultSet.getString("Name"), resultSet.getString("Email"), resultSet.getString("Password"));
             }
 
         } catch (SQLException e) {
