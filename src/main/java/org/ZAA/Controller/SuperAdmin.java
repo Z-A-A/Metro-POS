@@ -12,6 +12,11 @@ public class SuperAdmin
     private String password;
     private METRO_POS_MAIN_CONTROLLER_CODE mainController;
 
+    public SuperAdmin()
+    {
+
+    }
+
     public SuperAdmin(String name, String email, String password)
     {
         this.name = name;
@@ -51,7 +56,7 @@ public class SuperAdmin
     }
 
     @PostMapping("/createBranch")
-    public boolean createBranch(@RequestParam String branchCode, @RequestParam String name, @RequestParam String city, @RequestParam boolean isActive, @RequestParam String address, @RequestParam String phone) {
+    public boolean createBranch(@RequestParam String branchCode, @RequestParam String name, @RequestParam String city, @RequestParam Boolean isActive, @RequestParam String address, @RequestParam String phone) {
         Branch newBranch = new Branch(branchCode, name, city, isActive, address, phone);
         BranchManagement newBranchManagement = new BranchManagement(newBranch);
         mainController.getBranches().add(newBranchManagement);
