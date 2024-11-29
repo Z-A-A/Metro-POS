@@ -1,0 +1,137 @@
+Index: src/main/java/org/ZAA/backend/Controller/SuperAdminController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package org.ZAA.backend.Controller;public class SuperAdminController {\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/ZAA/backend/Controller/SuperAdminController.java b/src/main/java/org/ZAA/backend/Controller/SuperAdminController.java
+--- a/src/main/java/org/ZAA/backend/Controller/SuperAdminController.java	(revision 0eac908fb7bf2550f8fa7baa479f8d0376624ae2)
++++ b/src/main/java/org/ZAA/backend/Controller/SuperAdminController.java	(date 1732302693835)
+@@ -1,2 +1,39 @@
+-package org.ZAA.backend.Controller;public class SuperAdminController {
+-}
++package org.ZAA.backend.Controller;
++
++import java.sql.Connection;
++import java.sql.DriverManager;
++import java.sql.PreparedStatement;
++import java.sql.ResultSet;
++import java.sql.SQLException;
++
++public class SuperAdminController {
++
++    private static final String DB_URL = "jdbc:postgresql://localhost:5432/your_database";
++    private static final String DB_USER = "your_username";
++    private static final String DB_PASSWORD = "your_password";
++
++    public SuperAdmin getSuperAdminById(int superAdminId) {
++        SuperAdmin superAdmin = null;
++        String query = "SELECT * FROM SuperAdmin WHERE SuperAdminID = ?";
++
++        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
++             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
++
++            preparedStatement.setInt(1, superAdminId);
++            ResultSet resultSet = preparedStatement.executeQuery();
++
++            if (resultSet.next()) {
++                superAdmin = new SuperAdmin();
++                superAdmin.setSuperAdminID(resultSet.getInt("SuperAdminID"));
++                superAdmin.setName(resultSet.getString("Name"));
++                superAdmin.setEmail(resultSet.getString("Email"));
++                superAdmin.setPassword(resultSet.getString("Password"));
++            }
++
++        } catch (SQLException e) {
++            e.printStackTrace();
++        }
++
++        return superAdmin;
++    }
++}
+\ No newline at end of file
+Index: src/main/java/org/ZAA/Utils/database.sql
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>-- noinspection SqlNoDataSourceInspectionForFile\r\n\r\n-- Metro POS System Database Schema\r\n-- PostgreSQL Database\r\n\r\n-- Drop existing tables if they exist\r\nDROP TABLE IF EXISTS Reports CASCADE;\r\nDROP TABLE IF EXISTS Sales CASCADE;\r\nDROP TABLE IF EXISTS Products CASCADE;\r\nDROP TABLE IF EXISTS Vendors CASCADE;\r\nDROP TABLE IF EXISTS Users CASCADE;\r\nDROP TABLE IF EXISTS BranchManagers CASCADE;\r\nDROP TABLE IF EXISTS Branches CASCADE;\r\n\r\n\r\n-- Create Super Admin Table\r\nCREATE TABLE SuperAdmin (\r\n      SuperAdminID SERIAL PRIMARY KEY,\r\n      Name VARCHAR(100) NOT NULL,\r\n      Email VARCHAR(100) UNIQUE NOT NULL,\r\n      Password VARCHAR(255) NOT NULL,\r\n);\r\n\r\n-- Create Branches Table\r\nCREATE TABLE Branches (\r\n      BranchID SERIAL PRIMARY KEY,\r\n      BranchCode VARCHAR(20) UNIQUE NOT NULL,\r\n      BranchName VARCHAR(100) NOT NULL,\r\n      City VARCHAR(50) NOT NULL,\r\n      Address VARCHAR(200) NOT NULL,\r\n      Phone VARCHAR(20) NOT NULL,\r\n      NumEmployees INTEGER DEFAULT 0,\r\n      IsActive BOOLEAN DEFAULT TRUE,\r\n);\r\n\r\n--Create Branch Manager Table\r\nCREATE TABLE BranchManagers (\r\n        ManagerID SERIAL PRIMARY KEY,\r\n        Name VARCHAR(100) NOT NULL,\r\n        EmployeeNo VARCHAR(20) UNIQUE NOT NULL,\r\n        Email VARCHAR(100) UNIQUE NOT NULL,\r\n        Password VARCHAR(255) NOT NULL,\r\n        BranchCode VARCHAR(20) NOT NULL,\r\n        Salary DECIMAL(10, 2),\r\n        ContactPhone VARCHAR(20),\r\n        IsActive BOOLEAN DEFAULT TRUE,\r\n        FOREIGN KEY (BranchCode) REFERENCES Branches(BranchCode)\r\n);\r\n\r\n\r\n-- Create Users Table\r\nCREATE TABLE Cashier (\r\n       UserID SERIAL PRIMARY KEY,\r\n       Name VARCHAR(100) NOT NULL,\r\n       EmployeeNo VARCHAR(20) UNIQUE NOT NULL,\r\n       Email VARCHAR(100) UNIQUE NOT NULL,\r\n       Password VARCHAR(255) NOT NULL,\r\n       BranchCode VARCHAR(20),\r\n       Salary DECIMAL(10, 2),\r\n       IsActive BOOLEAN DEFAULT TRUE,\r\n       FOREIGN KEY (BranchCode) REFERENCES Branches(BranchCode)\r\n);\r\n\r\nCREATE TABLE DataEntryOperator (\r\n       UserID SERIAL PRIMARY KEY,\r\n       Name VARCHAR(100) NOT NULL,\r\n       EmployeeNo VARCHAR(20) UNIQUE NOT NULL,\r\n       Email VARCHAR(100) UNIQUE NOT NULL,\r\n       Password VARCHAR(255) NOT NULL,\r\n       Role VARCHAR(30) NOT NULL CHECK (Role IN ('Cashier', 'DataEntryOperator')),\r\n       BranchCode VARCHAR(20),\r\n       Salary DECIMAL(10, 2),\r\n       IsActive BOOLEAN DEFAULT TRUE,\r\n       FOREIGN KEY (BranchCode) REFERENCES Branches(BranchCode)\r\n);\r\n\r\n-- Create Vendors Table\r\nCREATE TABLE Vendors (\r\n     VendorID SERIAL PRIMARY KEY,\r\n     VendorName VARCHAR(100) NOT NULL,\r\n     VendorAddress VARCHAR(200),\r\n     VendorPhone VARCHAR(20),\r\n     IsActive BOOLEAN DEFAULT TRUE,\r\n     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP\r\n);\r\n\r\n-- Create Products Table\r\nCREATE TABLE Products (\r\n      ProductID SERIAL PRIMARY KEY,\r\n      ProductName VARCHAR(100) NOT NULL,\r\n      Category VARCHAR(50) NOT NULL,\r\n      OriginalPrice DECIMAL(10, 2) NOT NULL,\r\n      SalePrice DECIMAL(10, 2) NOT NULL,\r\n      PricePerUnit DECIMAL(10, 2) NOT NULL,\r\n      PricePerCarton DECIMAL(10, 2) NOT NULL,\r\n      VendorID INTEGER,\r\n      CurrentStock INTEGER DEFAULT 0,\r\n      IsActive BOOLEAN DEFAULT TRUE,\r\n      CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\r\n      FOREIGN KEY (VendorID) REFERENCES Vendors(VendorID)\r\n);\r\n\r\n-- Create Sales Table\r\nCREATE TABLE Sales (\r\n   SaleID SERIAL PRIMARY KEY,\r\n   SaleDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\r\n   BranchCode VARCHAR(20),\r\n   ProductID INTEGER,\r\n   Quantity INTEGER NOT NULL,\r\n   UnitPrice DECIMAL(10, 2) NOT NULL,\r\n   TotalAmount DECIMAL(10, 2) NOT NULL,\r\n   CashierUserID INTEGER,\r\n   FOREIGN KEY (BranchCode) REFERENCES Branches(BranchCode),\r\n   FOREIGN KEY (ProductID) REFERENCES Products(ProductID),\r\n   FOREIGN KEY (CashierUserID) REFERENCES Users(UserID)\r\n);\r\n\r\n-- Create Reports Table\r\nCREATE TABLE Reports (\r\n     ReportID SERIAL PRIMARY KEY,\r\n     BranchCode VARCHAR(20),\r\n     ReportType VARCHAR(20) CHECK (ReportType IN ('Sales', 'RemainingStock', 'Profit')),\r\n     ReportDate DATE DEFAULT CURRENT_DATE,\r\n     TotalSales DECIMAL(10, 2),\r\n     TotalProfit DECIMAL(10, 2),\r\n     RemainingStock INTEGER,\r\n     GeneratedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,\r\n     FOREIGN KEY (BranchCode) REFERENCES Branches(BranchCode)\r\n);\r\n\r\n-- Create Indexes for Performance\r\nCREATE INDEX idx_users_email ON Users(Email);\r\nCREATE INDEX idx_users_branch_code ON Users(BranchCode);\r\nCREATE INDEX idx_products_vendor ON Products(VendorID);\r\nCREATE INDEX idx_sales_product ON Sales(ProductID);\r\nCREATE INDEX idx_sales_branch ON Sales(BranchCode);\r\nCREATE INDEX idx_reports_branch ON Reports(BranchCode);\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/src/main/java/org/ZAA/Utils/database.sql b/src/main/java/org/ZAA/Utils/database.sql
+--- a/src/main/java/org/ZAA/Utils/database.sql	(revision 0eac908fb7bf2550f8fa7baa479f8d0376624ae2)
++++ b/src/main/java/org/ZAA/Utils/database.sql	(date 1732303241077)
+@@ -50,28 +50,25 @@
+ 
+ -- Create Users Table
+ CREATE TABLE Cashier (
+-       UserID SERIAL PRIMARY KEY,
+-       Name VARCHAR(100) NOT NULL,
+-       EmployeeNo VARCHAR(20) UNIQUE NOT NULL,
+-       Email VARCHAR(100) UNIQUE NOT NULL,
+-       Password VARCHAR(255) NOT NULL,
+-       BranchCode VARCHAR(20),
+-       Salary DECIMAL(10, 2),
+-       IsActive BOOLEAN DEFAULT TRUE,
+-       FOREIGN KEY (BranchCode) REFERENCES Branches(BranchCode)
++     EmployeeNo SERIAL PRIMARY KEY,
++     Name VARCHAR(100) NOT NULL,
++     Email VARCHAR(100) UNIQUE NOT NULL,
++     Password VARCHAR(255) NOT NULL,
++     BranchCode VARCHAR(20),
++     Salary DECIMAL(10, 2),
++     IsActive BOOLEAN DEFAULT TRUE,
++     FOREIGN KEY (BranchCode) REFERENCES Branches(BranchCode)
+ );
+ 
+ CREATE TABLE DataEntryOperator (
+-       UserID SERIAL PRIMARY KEY,
+-       Name VARCHAR(100) NOT NULL,
+-       EmployeeNo VARCHAR(20) UNIQUE NOT NULL,
+-       Email VARCHAR(100) UNIQUE NOT NULL,
+-       Password VARCHAR(255) NOT NULL,
+-       Role VARCHAR(30) NOT NULL CHECK (Role IN ('Cashier', 'DataEntryOperator')),
+-       BranchCode VARCHAR(20),
+-       Salary DECIMAL(10, 2),
+-       IsActive BOOLEAN DEFAULT TRUE,
+-       FOREIGN KEY (BranchCode) REFERENCES Branches(BranchCode)
++   EmployeeNo SERIAL PRIMARY KEY,
++   Name VARCHAR(100) NOT NULL,
++   Email VARCHAR(100) UNIQUE NOT NULL,
++   Password VARCHAR(255) NOT NULL,
++   BranchCode VARCHAR(20),
++   Salary DECIMAL(10, 2),
++   IsActive BOOLEAN DEFAULT TRUE,
++   FOREIGN KEY (BranchCode) REFERENCES Branches(BranchCode)
+ );
+ 
+ -- Create Vendors Table
+@@ -81,7 +78,6 @@
+      VendorAddress VARCHAR(200),
+      VendorPhone VARCHAR(20),
+      IsActive BOOLEAN DEFAULT TRUE,
+-     CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+ );
+ 
+ -- Create Products Table
+@@ -95,8 +91,8 @@
+       PricePerCarton DECIMAL(10, 2) NOT NULL,
+       VendorID INTEGER,
+       CurrentStock INTEGER DEFAULT 0,
++      ProductImagePath VARCHAR(255),
+       IsActive BOOLEAN DEFAULT TRUE,
+-      CreatedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+       FOREIGN KEY (VendorID) REFERENCES Vendors(VendorID)
+ );
+ 
+@@ -128,10 +124,3 @@
+      FOREIGN KEY (BranchCode) REFERENCES Branches(BranchCode)
+ );
+ 
+--- Create Indexes for Performance
+-CREATE INDEX idx_users_email ON Users(Email);
+-CREATE INDEX idx_users_branch_code ON Users(BranchCode);
+-CREATE INDEX idx_products_vendor ON Products(VendorID);
+-CREATE INDEX idx_sales_product ON Sales(ProductID);
+-CREATE INDEX idx_sales_branch ON Sales(BranchCode);
+-CREATE INDEX idx_reports_branch ON Reports(BranchCode);
