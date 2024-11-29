@@ -7,6 +7,8 @@ import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SuperAdminController {
 
@@ -14,24 +16,26 @@ public class SuperAdminController {
     private static final String DB_USER = "your_username";
     private static final String DB_PASSWORD = "your_password";
 
-    public SuperAdmin getSuperAdminById(int superAdminId) {
-        SuperAdmin superAdmin = null;
-        String query = "SELECT * FROM SuperAdmin WHERE SuperAdminID = ?";
+    public List<SuperAdmin> getAllSuperAdmins() {
+        List<SuperAdmin> superAdmins = new ArrayList<>();
+        String query = "SELECT * FROM SuperAdmin";
 
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
 
-            preparedStatement.setInt(1, superAdminId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                superAdmin = new SuperAdmin(resultSet.getString("Name"), resultSet.getString("Email"), resultSet.getString("Password"));
+            while (resultSet.next()) {
+                SuperAdmin superAdmin = new SuperAdmin(
+                        resultSet.getString("Name"),
+                        resultSet.getString("Email"),
+                        resultSet.getString("Password")
+                );
+                superAdmins.add(superAdmin);
             }
-
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return superAdmin;
+        return superAdmins;
     }
 }
