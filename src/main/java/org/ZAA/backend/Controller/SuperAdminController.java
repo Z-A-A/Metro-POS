@@ -1,10 +1,13 @@
-package org.ZAA.backend.Model;
+package org.ZAA.backend.Controller;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.ZAA.Controller.SuperAdmin;
 
 public class SuperAdminController {
@@ -13,43 +16,27 @@ public class SuperAdminController {
     private static final String DB_USER = "sql12746761";
     private static final String DB_PASSWORD = "Cr68DxeLq2";
 
-    public SuperAdmin getSuperAdminById(int superAdminId) {
-        SuperAdmin superAdmin = null;
-        String query = "SELECT * FROM SuperAdmin WHERE SuperAdminID = ?";
+    //create method to return list of superadmins from database
+    public List<SuperAdmin> getAllSuperAdmins() {
+        List<SuperAdmin> superAdmins = new ArrayList<>();
+        String query = "SELECT * FROM SuperAdmin";
 
-        Connection connection = null;
-        PreparedStatement preparedStatement = null;
-        ResultSet resultSet = null;
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
 
-        try {
-            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-            preparedStatement = connection.prepareStatement(query);
-            preparedStatement.setInt(1, superAdminId);
-            resultSet = preparedStatement.executeQuery();
-
-            if (resultSet.next()) {
-                superAdmin = new SuperAdmin(resultSet.getString("Name"), resultSet.getString("Email"), resultSet.getString("Password"));
+            while (resultSet.next()) {
+                SuperAdmin superAdmin = new SuperAdmin(
+                        resultSet.getString("Name"),
+                        resultSet.getString("Email"),
+                        resultSet.getString("Password")
+                );
+                superAdmins.add(superAdmin);
             }
         } catch (SQLException e) {
             e.printStackTrace();
-        } finally {
-            try {
-                if (resultSet != null) resultSet.close();
-                if (preparedStatement != null) preparedStatement.close();
-                if (connection != null) connection.close();
-            } catch (SQLException e) {
-                e.printStackTrace();
-            }
         }
 
-        return superAdmin;
-    }
-
-    public static void main(String[] args) {
-        SuperAdminController superAdminController = new SuperAdminController();
-        SuperAdmin superAdmin = superAdminController.getSuperAdminById(1);
-        System.out.println(superAdmin.getName());
-        System.out.println(superAdmin.getEmail());
-        System.out.println(superAdmin.getPassword());
+        return superAdmins;
     }
 }
