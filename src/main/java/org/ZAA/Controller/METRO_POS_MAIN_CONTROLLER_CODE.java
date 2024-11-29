@@ -3,6 +3,10 @@ package org.ZAA.Controller;
 import java.util.*;
 
 import jakarta.annotation.PostConstruct;
+import org.ZAA.backend.Controller.BranchManagerController;
+import org.ZAA.backend.Controller.CashierController;
+import org.ZAA.backend.Controller.DataEntryOperatorController;
+import org.ZAA.backend.Controller.SuperAdminController;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -27,14 +31,17 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
     }
 
     @PostConstruct
-    public void loadData()
-    {
-        // LOAD DATA FROM DATABASE INTO LISTS.
-        TEST_LOAD_WITHOUT_DB();
-        for(SuperAdmin superAdmin: superAdmins)
-        {
-            System.out.println(superAdmin.getName());
-        }
+    public void loadData() {
+        SuperAdminController superAdminController = new SuperAdminController();
+        BranchManagerController branchManagerController = new BranchManagerController();
+        CashierController cashierController = new CashierController();
+        DataEntryOperatorController dataEntryOperatorController = new DataEntryOperatorController();
+
+        this.superAdmins = superAdminController.getAllSuperAdmins();
+        this.admins = branchManagerController.getAllBranchManagers();
+        this.cashiers = cashierController.getAllCashiers();
+        this.dataEntryOperators = dataEntryOperatorController.getAllDataEntryOperators();
+
     }
 
     public void syncDataToDataBase()
