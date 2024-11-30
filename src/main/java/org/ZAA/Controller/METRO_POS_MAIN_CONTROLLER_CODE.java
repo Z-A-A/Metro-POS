@@ -37,6 +37,8 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
         }
     }
 
+
+
     public void syncDataToDataBase()
     {
         //STORE DATA COLLECTIONS INTO

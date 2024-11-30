@@ -71,4 +71,6 @@ public class Cashier
     public void setSalary(Double salary) {
         this.salary = salary;
     }
+
+
 }
