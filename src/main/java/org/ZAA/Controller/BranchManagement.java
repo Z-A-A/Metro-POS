@@ -10,6 +10,7 @@ public class BranchManagement
     private List<Cashier> cashiers;
     private List<DataEntryOperator> dataEntryOperators;
 
+
     public BranchManagement()
     {
 
