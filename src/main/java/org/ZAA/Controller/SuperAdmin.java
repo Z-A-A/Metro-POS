@@ -1,6 +1,8 @@
 package org.ZAA.Controller;
 
 import java.util.List;
+
+import org.ZAA.backend.Controller.BranchController;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -61,7 +63,15 @@ public class SuperAdmin
         BranchManagement newBranchManagement = new BranchManagement(newBranch);
         mainController.getBranches().add(newBranchManagement);
         //UPDATE IN DB HERE
-        System.out.println("BRANCH CREATED SUCCESSFULLY: " + name);
-        return true;
+        BranchController branchController = new BranchController();
+        boolean isAdded = branchController.addBranch(newBranch);
+
+        if (isAdded) {
+            System.out.println("BRANCH CREATED SUCCESSFULLY: " + newBranch.getName());
+            return true;
+        } else {
+            System.out.println("FAILED TO CREATE BRANCH: " + newBranch.getName());
+            return false;
+        }
     }
 }

@@ -12,9 +12,9 @@ import java.util.List;
 
 public class SuperAdminController {
 
-    private static final String DB_URL = "jdbc:postgresql://localhost:5432/your_database";
-    private static final String DB_USER = "your_username";
-    private static final String DB_PASSWORD = "your_password";
+    private static final String DB_URL = "jdbc:mysql://sql12.freesqldatabase.com:3306/sql12746761";
+    private static final String DB_USER = "sql12746761";
+    private static final String DB_PASSWORD = "Cr68DxeLq2";
 
     public List<SuperAdmin> getAllSuperAdmins() {
         List<SuperAdmin> superAdmins = new ArrayList<>();

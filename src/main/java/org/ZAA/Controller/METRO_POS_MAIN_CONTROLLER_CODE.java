@@ -3,10 +3,7 @@ package org.ZAA.Controller;
 import java.util.*;
 
 import jakarta.annotation.PostConstruct;
-import org.ZAA.backend.Controller.BranchManagerController;
-import org.ZAA.backend.Controller.CashierController;
-import org.ZAA.backend.Controller.DataEntryOperatorController;
-import org.ZAA.backend.Controller.SuperAdminController;
+import org.ZAA.backend.Controller.*;
 import org.springframework.web.bind.annotation.*;
 
 
@@ -168,8 +165,16 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
         BranchManager newBranchManager = new BranchManager(name, admins.size() + 1, email, branchCode, salary);
         admins.add(newBranchManager);
         // ALSO ADD IN DATABASEEE HERE ===============================
-        System.out.println("ADMIN (BRANCH MANAGER) ADDED SUCCESSFULLY: " + newBranchManager.getName());
-        return true;
+        BranchManagerController branchManagerController = new BranchManagerController();
+        boolean isAdded = branchManagerController.addBranchManager(newBranchManager);
+
+        if (isAdded) {
+            System.out.println("ADMIN (BRANCH MANAGER) ADDED SUCCESSFULLY: " + newBranchManager.getName());
+            return true;
+        } else {
+            System.out.println("FAILED TO ADD ADMIN (BRANCH MANAGER): " + newBranchManager.getName());
+            return false;
+        }
     }
 
     @PostMapping("/signup/cashier")
@@ -177,8 +182,16 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
         Cashier newCashier = new Cashier(name, cashiers.size() + 1, email, branchCode, salary);
         cashiers.add(newCashier);
         // ALSO ADD IN DATABASEEEEE HERE ===============================
-        System.out.println("CASHIER ADDED SUCCESSFULLY: " + newCashier.getName());
-        return true;
+        CashierController cashierController = new CashierController();
+        boolean isAdded = cashierController.addCashier(newCashier);
+
+        if (isAdded) {
+            System.out.println("CASHIER ADDED SUCCESSFULLY: " + newCashier.getName());
+            return true;
+        } else {
+            System.out.println("FAILED TO ADD CASHIER: " + newCashier.getName());
+            return false;
+        }
     }
 
     @PostMapping("/signup/dataentryoperator")
@@ -186,9 +199,18 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
         DataEntryOperator newDataEntryOperator = new DataEntryOperator(name, dataEntryOperators.size() + 1, email, branchCode, salary);
         dataEntryOperators.add(newDataEntryOperator);
         // ALSO ADD IN DATABASEEE HERE ===============================
-        System.out.println("DATA ENTRY OPERATOR ADDED SUCCESSFULLY: " + newDataEntryOperator.getName());
-        return true;
+        DataEntryOperatorController dataEntryOperatorController = new DataEntryOperatorController();
+        boolean isAdded = dataEntryOperatorController.addDataEntryOperator(newDataEntryOperator);
+
+        if (isAdded) {
+            System.out.println("DATA ENTRY OPERATOR ADDED SUCCESSFULLY: " + newDataEntryOperator.getName());
+            return true;
+        } else {
+            System.out.println("FAILED TO ADD DATA ENTRY OPERATOR: " + newDataEntryOperator.getName());
+            return false;
+        }
     }
+
 
     //PASSWORD CHANGE METHODS FOR GUI.
 

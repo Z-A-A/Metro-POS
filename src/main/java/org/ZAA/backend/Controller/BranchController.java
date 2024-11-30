@@ -66,4 +66,21 @@ public class BranchController {
 
         return branches;
     }
+
+    //Method to check if code exists in branches table
+    public boolean checkBranchCode(String branchCode) {
+        String query = "SELECT * FROM Branches WHERE BranchCode = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, branchCode);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            return resultSet.next();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

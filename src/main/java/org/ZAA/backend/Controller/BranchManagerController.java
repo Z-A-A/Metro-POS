@@ -19,6 +19,10 @@ public class BranchManagerController {
     // Method to add a branch manager to the database
     public boolean addBranchManager(BranchManager branchManager) {
         String query = "INSERT INTO BranchManagers (Name, EmployeeNo, Email, Password, BranchCode, Salary) VALUES (?, ?, ?, ?, ?, ?)";
+        BranchController branchController = new BranchController();
+        if(branchController.checkBranchCode(branchManager.getBranchCode())){
+            return false;
+        }
 
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
