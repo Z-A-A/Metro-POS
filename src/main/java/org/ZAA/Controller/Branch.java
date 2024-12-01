@@ -53,6 +53,10 @@ public class Branch
         numberOfEmployees++;
     }
 
+    public void incrementEmployeeCount(int count) {
+        numberOfEmployees += count;
+    }
+
     public void setActive(Boolean isActive) {
         this.isActive = isActive;
     }
