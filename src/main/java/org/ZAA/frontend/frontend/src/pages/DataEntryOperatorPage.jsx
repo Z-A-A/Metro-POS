@@ -1,122 +1,62 @@
-import React, { useState } from 'react';
-import {
-  Box,
-  Button,
-  Card,
-  CardContent,
-  CardMedia,
-  Grid,
-  List,
-  ListItem,
-  ListItemText,
-  TextField,
-  Typography,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-  InputBase,
-} from '@mui/material';
+import React, { useState, useEffect } from 'react';
+import { Box, Button, Typography, InputBase, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
 import { Add, Delete, Search } from '@mui/icons-material';
-import { motion } from 'framer-motion';
-import { styled } from '@mui/system';
+import axios from 'axios';
 
-// Sample vendors array
-const vendors = [
-  { id: 1, name: 'Vendor 1', products: [] },
-  { id: 2, name: 'Vendor 2', products: [] },
-];
+// Define Sidebar and SearchBar components
+const Sidebar = ({ children }) => (
+  <Box sx={{ width: '250px', padding: '16px', borderRight: '1px solid #ddd' }}>
+    {children}
+  </Box>
+);
 
-// Styled components
-const StyledBox = styled(Box)({
-  display: 'flex',
-  height: '100vh',
-  background: 'linear-gradient(135deg, #f3f4f6, #e3e8f0)',
-});
+const SearchBar = ({ children }) => (
+  <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
+    {children}
+  </Box>
+);
 
-const Sidebar = styled(Box)({
-  width: '20%',
-  padding: '16px',
-  background: '#ffffff',
-  borderRadius: '16px',
-  boxShadow: '0 8px 12px rgba(0, 0, 0, 0.1)',
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-});
+const VendorCard = ({ children, onClick }) => (
+  <Box sx={{ padding: '8px', borderBottom: '1px solid #ddd', cursor: 'pointer' }} onClick={onClick}>
+    {children}
+  </Box>
+);
 
-const SearchBar = styled(Box)({
-  width: '100%',
-  display: 'flex',
-  alignItems: 'center',
-  background: '#f1f5f9',
-  padding: '8px 12px',
-  borderRadius: '12px',
-  marginBottom: '16px',
-  boxShadow: 'inset 0 1px 2px rgba(0, 0, 0, 0.05)',
-});
-
-const VendorCard = styled(Box)({
-  width: '100%',
-  margin: '8px 0',
-  padding: '12px',
-  borderRadius: '12px',
-  background: '#f9fafb',
-  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
-  transition: 'transform 0.2s, box-shadow 0.2s',
-  cursor: 'pointer',
-  '&:hover': {
-    transform: 'translateY(-2px)',
-    boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
-  },
-});
-
-const Content = styled(Box)({
-  flex: 1,
-  padding: '16px',
-  display: 'flex',
-  flexDirection: 'column',
-  overflowY: 'auto',
-});
-
-const ProductCard = styled(Card)({
-  width: 240,
-  margin: '8px',
-  borderRadius: '16px',
-  overflow: 'hidden',
-  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
-  transition: 'transform 0.3s',
-  '&:hover': {
-    transform: 'scale(1.05)',
-  },
-});
-
-const AppHeader = styled(Box)({
-  width: '100%',
-  padding: '16px',
-  background: '#ffffff',
-  borderBottom: '1px solid #e5e7eb',
-  display: 'flex',
-  justifyContent: 'space-between',
-  alignItems: 'center',
-  boxShadow: '0 2px 4px rgba(0, 0, 0, 0.05)',
-  position: 'sticky',
-  top: 0,
-  zIndex: 10,
-});
-
-// Component
 const DataEntryOperatorPage = () => {
+  const [vendors, setVendors] = useState([]);
   const [selectedVendor, setSelectedVendor] = useState(null);
   const [open, setOpen] = useState(false);
-  const [newProduct, setNewProduct] = useState({ name: '', price: '', quantity: '', image: null });
+  const [formData, setFormData] = useState({
+    vendorID: '',
+    vendorName: '',
+    vendorAddress: '',
+    vendorPhone: '',
+    branchCode: ''
+  });
+
+  useEffect(() => {
+    fetchVendors();
+  }, []);
+
+  const fetchVendors = async () => {
+    try {
+      const response = await axios.get('/api/vendors/getAllVendors');
+      if (Array.isArray(response.data)) {
+        setVendors(response.data);
+      } else {
+        setVendors([]);
+      }
+    } catch (error) {
+      console.error('Error fetching vendors:', error);
+      setVendors([]);
+    }
+  };
 
   const handleVendorClick = (vendor) => {
     setSelectedVendor(vendor);
   };
 
-  const handleAddProductClick = () => {
+  const handleOpen = () => {
     setOpen(true);
   };
 
@@ -124,48 +64,70 @@ const DataEntryOperatorPage = () => {
     setOpen(false);
   };
 
-  const handleProductChange = (e) => {
+  const handleChange = (e) => {
     const { name, value } = e.target;
-    setNewProduct((prev) => ({ ...prev, [name]: value }));
+    setFormData({
+      ...formData,
+      [name]: value
+    });
   };
 
-  const handleImageChange = (e) => {
-    setNewProduct((prev) => ({ ...prev, image: URL.createObjectURL(e.target.files[0]) }));
+  const validateForm = () => {
+    const { vendorID, vendorName, vendorAddress, vendorPhone, branchCode } = formData;
+    return vendorID && vendorName && vendorAddress && vendorPhone && branchCode;
   };
 
-  const handleAddProduct = () => {
-    if (selectedVendor) {
-      selectedVendor.products.push(newProduct);
-      setSelectedVendor({ ...selectedVendor });
-      setOpen(false);
-      setNewProduct({ name: '', price: '', quantity: '', image: null });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!validateForm()) return;
+  
+    try {
+      const params = new URLSearchParams({
+        vendorID: formData.vendorID,
+        vendorName: formData.vendorName,
+        vendorAddress: formData.vendorAddress,
+        vendorPhone: formData.vendorPhone,
+        branchCode: formData.branchCode
+      });
+  
+      const response = await axios.post(`/api/vendors/createVendor?${params.toString()}`);
+  
+      if (response.data) {
+        console.log('Vendor created successfully:', response.data);
+        setVendors((prevVendors) => [...prevVendors, response.data]);
+        setTimeout(() => {
+          handleClose();
+          setFormData({
+            vendorID: '',
+            vendorName: '',
+            vendorAddress: '',
+            vendorPhone: '',
+            branchCode: ''
+          });
+        }, 1500);
+      }
+    } catch (error) {
+      console.error('Error creating vendor:', error);
+      console.log(error.response?.data || 'Error creating vendor');
     }
   };
 
   return (
-    <StyledBox>
-      {/* Header */}
-      {/* <AppHeader>
-        <Typography variant="h5" sx={{ fontWeight: 'bold', color: '#1976d2' }}>
-          Data Entry Portal
-        </Typography>
-      </AppHeader> */}
-
-      {/* Sidebar */}
+    <div>
       <Sidebar>
         <SearchBar>
           <Search sx={{ color: '#9e9e9e', marginRight: '8px' }} />
           <InputBase placeholder="Search Vendors..." fullWidth />
         </SearchBar>
-        {vendors.map((vendor) => (
-          <VendorCard key={vendor.id} onClick={() => handleVendorClick(vendor)}>
+        {Array.isArray(vendors) && vendors.map((vendor) => (
+          <VendorCard key={vendor.vendorID} onClick={() => handleVendorClick(vendor)}>
             <Typography variant="body1" sx={{ fontWeight: 'bold', color: '#333' }}>
-              {vendor.name}
+              {vendor.vendorName}
             </Typography>
           </VendorCard>
         ))}
         <Box sx={{ display: 'flex', gap: '8px', marginTop: '16px' }}>
-          <Button variant="contained" color="primary" startIcon={<Add />}>
+          <Button variant="contained" color="primary" startIcon={<Add />} onClick={handleOpen}>
             Add Vendor
           </Button>
           <Button variant="outlined" color="error" startIcon={<Delete />}>
@@ -175,102 +137,78 @@ const DataEntryOperatorPage = () => {
       </Sidebar>
 
       {/* Content */}
-      <Content>
+      <Box sx={{ padding: '16px' }}>
         {selectedVendor ? (
           <>
-            <Typography variant="h5" sx={{ mb: 3, fontWeight: 'bold', color: '#1976d2' }}>
-              {selectedVendor.name} - Products
-            </Typography>
-            <Grid container spacing={3}>
-              {selectedVendor.products.map((product, index) => (
-                <Grid item key={index}>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ duration: 0.5 }}
-                  >
-                    <ProductCard>
-                      <CardMedia
-                        component="img"
-                        height="140"
-                        image={product.image}
-                        alt={product.name}
-                      />
-                      <CardContent>
-                        <Typography variant="body1" sx={{ fontWeight: 'bold' }}>
-                          {product.name}
-                        </Typography>
-                        <Typography variant="body2">Price: ${product.price}</Typography>
-                        <Typography variant="body2">Quantity: {product.quantity}</Typography>
-                      </CardContent>
-                    </ProductCard>
-                  </motion.div>
-                </Grid>
-              ))}
-            </Grid>
-            <Box sx={{ display: 'flex', gap: '16px', marginTop: '16px' }}>
-              <Button variant="contained" color="primary" onClick={handleAddProductClick}>
-                Add Product
-              </Button>
-              <Button variant="outlined" color="error">
-                Remove Product
-              </Button>
-            </Box>
+            {/* Render selected vendor details */}
           </>
         ) : (
-          <Typography variant="h6" sx={{ color: '#1976d2' }}>
-            Select a vendor to view products
-          </Typography>
+          <Typography variant="h6">Select a vendor to view details</Typography>
         )}
-      </Content>
+      </Box>
 
-      {/* Dialog */}
+      {/* Add Vendor Dialog */}
       <Dialog open={open} onClose={handleClose}>
-        <DialogTitle>Add New Product</DialogTitle>
+        <DialogTitle>Add Vendor</DialogTitle>
         <DialogContent>
           <TextField
             autoFocus
             margin="dense"
-            label="Product Name"
+            name="vendorID"
+            label="Vendor ID"
+            type="number"
+            fullWidth
+            variant="standard"
+            value={formData.vendorID}
+            onChange={handleChange}
+          />
+          <TextField
+            margin="dense"
+            name="vendorName"
+            label="Vendor Name"
             type="text"
             fullWidth
-            name="name"
-            value={newProduct.name}
-            onChange={handleProductChange}
+            variant="standard"
+            value={formData.vendorName}
+            onChange={handleChange}
           />
           <TextField
             margin="dense"
-            label="Price"
-            type="number"
+            name="vendorAddress"
+            label="Vendor Address"
+            type="text"
             fullWidth
-            name="price"
-            value={newProduct.price}
-            onChange={handleProductChange}
+            variant="standard"
+            value={formData.vendorAddress}
+            onChange={handleChange}
           />
           <TextField
             margin="dense"
-            label="Quantity"
-            type="number"
+            name="vendorPhone"
+            label="Vendor Phone"
+            type="text"
             fullWidth
-            name="quantity"
-            value={newProduct.quantity}
-            onChange={handleProductChange}
+            variant="standard"
+            value={formData.vendorPhone}
+            onChange={handleChange}
           />
-          <Button variant="contained" component="label" sx={{ mt: 2 }}>
-            Upload Image
-            <input type="file" hidden onChange={handleImageChange} />
-          </Button>
+          <TextField
+            margin="dense"
+            name="branchCode"
+            label="Branch Code"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={formData.branchCode}
+            onChange={handleChange}
+          />
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleClose} color="primary">
-            Cancel
-          </Button>
-          <Button onClick={handleAddProduct} color="primary">
-            Add Product
-          </Button>
+          <Button onClick={handleClose}>Cancel</Button>
+          <Button onClick={handleSubmit}>Add</Button>
         </DialogActions>
       </Dialog>
-    </StyledBox>
+    </div>
   );
 };
 
