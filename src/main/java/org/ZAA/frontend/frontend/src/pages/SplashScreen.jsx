@@ -1,152 +1,143 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { useState, useEffect } from 'react';
-import Logo from '../assets/metro_logo.png';
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import Logo from "../assets/metro_logo.png"; // Ensure this path is correct
 
-// Grocery items with emojis
-const groceryItems = [
-  { name: 'apple', emoji: '🍎' },
-  { name: 'banana', emoji: '🍌' },
-  { name: 'bread', emoji: '🍞' },
-  { name: 'milk', emoji: '🥛' },
-  { name: 'cheese', emoji: '🧀' },
-  { name: 'carrot', emoji: '🥕' },
-  { name: 'broccoli', emoji: '🥦' },
-  { name: 'pizza', emoji: '🍕' },
-  { name: 'egg', emoji: '🥚' },
-  { name: 'tomato', emoji: '🍅' },
-  { name: 'orange', emoji: '🍊' },
-  { name: 'watermelon', emoji: '🍉' },
-];
-
-export default function SplashScreen() {
-  const [items, setItems] = useState([]);
+export default function WarpSplashScreen() {
   const [progress, setProgress] = useState(0);
-  const [isExiting, setIsExiting] = useState(false);
 
+  // Simulate progress bar
   useEffect(() => {
-    const totalDuration = 10000; // 10 seconds for the splash screen
-    const progressInterval = setInterval(() => {
-      setProgress((prev) => {
-        if (prev >= 100) {
-          clearInterval(progressInterval);
-          setIsExiting(true);
-          return 100;
-        }
-        return prev + 1;
-      });
-    }, totalDuration / 100);
-
-    // Add grocery items at intervals
-    const itemsInterval = setInterval(() => {
-      const selectedItem = groceryItems[Math.floor(Math.random() * groceryItems.length)];
-      const angle = Math.random() * 360; // Random angle for circular motion
-      setItems((prevItems) => [
-        ...prevItems,
-        {
-          id: Math.random(),
-          item: selectedItem,
-          angle, // Initial angle for circular path
-        },
-      ]);
-    }, 400); // New item every 400ms
-
-    return () => {
-      clearInterval(progressInterval);
-      clearInterval(itemsInterval);
-    };
+    const interval = setInterval(() => {
+      setProgress((prev) => (prev >= 100 ? 100 : prev + 1));
+    }, 30); // Faster simulation for a snappier feel
+    return () => clearInterval(interval);
   }, []);
 
   return (
-    <motion.div
-      className="relative flex items-center justify-center min-h-screen overflow-hidden bg-[#002B5C]"
-      animate={{ opacity: isExiting ? 0 : 1 }}
-      transition={{ duration: 0.5 }}
+    <div
+      style={{
+        position: "relative",
+        height: "100vh",
+        background: "linear-gradient(135deg, #001f3f, #002b5c)", // Deep blue gradient
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        overflow: "hidden",
+      }}
     >
-      {/* Grocery items animation */}
-      <AnimatePresence>
-        {items.map(({ id, item, angle }) => (
-          <motion.div
-            key={id}
-            className="absolute text-4xl z-30"
-            initial={{
-              x: 0, // Start at the center horizontally
-              y: window.innerHeight, // Start below the screen
-            }}
-            animate={{
-              x: [
-                0,
-                150 * Math.cos((angle * Math.PI) / 180), // Circular motion x-coordinate
-                0,
-              ],
-              y: [
-                window.innerHeight, // Start at the bottom
-                150 * Math.sin((angle * Math.PI) / 180), // Circular motion y-coordinate
-                0,
-              ],
-            }}
-            exit={{ opacity: 0 }}
-            transition={{
-              duration: 3, // Time for the full animation
-              ease: 'easeInOut', // Smooth motion
-              repeat: Infinity, // Repeat indefinitely for circular motion
-            }}
-            onAnimationComplete={() => {
-              setItems((prevItems) => prevItems.filter((i) => i.id !== id));
-            }}
-          >
-            {item.emoji}
-          </motion.div>
-        ))}
-      </AnimatePresence>
-
-      {/* Logo */}
+      {/* Warp Tunnel Background Animation */}
       <motion.div
-        className="relative z-20"
-        initial={{ scale: 0.5, opacity: 0 }}
-        animate={{ scale: 1, opacity: 1 }}
-        transition={{ duration: 0.8, ease: 'easeOut' }}
+        style={{
+          position: "absolute",
+          top: "0",
+          left: "0",
+          width: "100%",
+          height: "100%",
+          background: "transparent",
+          zIndex: -1,
+        }}
+        animate={{
+          backgroundPosition: ["center", "0% 0%", "center"],
+          backgroundSize: ["100%", "200%", "100%"],
+          filter: ["blur(0px)", "blur(10px)", "blur(0px)"],
+        }}
+        transition={{
+          duration: 10,
+          repeat: Infinity,
+          ease: "linear",
+        }}
       >
-        <motion.div
-          animate={{ y: [0, -10, 0] }}
-          transition={{
-            duration: 2,
-            repeat: Infinity,
-            ease: 'easeInOut',
+        {/* Warp Tunnel Effect with rotating gradient */}
+        <div
+          style={{
+            position: "absolute",
+            top: "0",
+            left: "0",
+            width: "100%",
+            height: "100%",
+            background:
+              "radial-gradient(circle, rgba(0, 172, 255, 0.2) 0%, rgba(0, 55, 255, 0.6) 80%)",
+            animation: "warp 5s infinite linear",
+            zIndex: -1,
+            filter: "blur(10px)",
           }}
-          className="relative w-64 h-32 md:w-96 md:h-48"
-        >
-          <img src={Logo} alt="METRO Logo" layout="fill" priority="true" />
-        </motion.div>
+        ></div>
       </motion.div>
 
-      {/* Progress Bar */}
-      <div className="absolute bottom-20 z-30 w-64">
+      {/* Static Logo with Soft Glow */}
+      <motion.div
+        style={{
+          position: "relative",
+          zIndex: 2,
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+        }}
+        initial={{ opacity: 0, y: -30 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1.5, ease: "easeOut" }}
+      >
+        <img
+          src={Logo}
+          alt="METRO Logo"
+          style={{
+            width: "12rem",
+            height: "auto",
+            filter: "drop-shadow(0 0 15px rgba(255, 255, 255, 0.5))",
+          }}
+        />
+      </motion.div>
+
+      {/* Glowing Loading Bar */}
+      <div
+        style={{
+          position: "absolute",
+          bottom: "4rem",
+          zIndex: 3,
+          width: "60%",
+        }}
+      >
         <motion.div
-          className="w-full bg-[#FFD700]/20 h-2 rounded-full overflow-hidden"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
+          style={{
+            width: "100%",
+            backgroundColor: "rgba(255, 255, 255, 0.2)",
+            height: "0.4rem",
+            borderRadius: "0.5rem",
+            overflow: "hidden",
+            boxShadow: "0 0 15px rgba(255, 255, 255, 0.5)",
+          }}
         >
           <motion.div
-            className="h-full bg-[#FFD700]"
+            style={{
+              height: "100%",
+              background: "linear-gradient(90deg, #FFD700, #FFA500)", // Glowing yellow gradient
+              boxShadow: "0 0 8px #FFD700",
+            }}
             initial={{ width: 0 }}
             animate={{ width: `${progress}%` }}
             transition={{ duration: 0.5 }}
           />
         </motion.div>
-        <motion.div
-          className="flex items-center justify-between mt-4 text-[#FFD700]"
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.5 }}
-        >
-          <span className="text-xl font-semibold">Loading</span>
-          <span className="text-xl font-semibold">{progress}%</span>
-        </motion.div>
       </div>
 
-      {/* Radial Gradient Overlay */}
-      <div className="absolute inset-0 bg-gradient-radial from-transparent via-transparent to-[#002B5C] pointer-events-none z-40" />
-    </motion.div>
+      <style>
+        {`
+          @keyframes warp {
+            0% {
+              transform: scale(1) rotate(0deg);
+              opacity: 0.7;
+            }
+            50% {
+              transform: scale(1.5) rotate(180deg);
+              opacity: 0.5;
+            }
+            100% {
+              transform: scale(1) rotate(360deg);
+              opacity: 0.7;
+            }
+          }
+        `}
+      </style>
+    </div>
   );
 }

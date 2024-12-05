@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Box, TextField, Button, Typography, Paper } from '@mui/material';
 import { styled } from '@mui/system';
@@ -25,26 +26,67 @@ const StyledTextField = styled(TextField)({
 });
 
 const LoginPage = () => {
+  const location = useLocation();
+  const role = location.state?.role || 'user'; // Default to 'user' if no role is provided
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  
+  const navigate = useNavigate();
 
   const handleLogin = async (event) => {
     event.preventDefault();
+    console.log('handleLogin called');
+    console.log('Email:', email);
+    console.log('Password:', password);
+    console.log('Role:', role);
+  
     try {
-      const response = await axios.post('/api/login/superadmin', {
-        email,
-        password
-      });
-      console.log('Login successful:', response.status);
-      console.log(response.data);
+      let apiEndpoint = '';
+      switch (role) {
+        case 'superadmin':
+          apiEndpoint = '/api/login/superadmin';
+          break;
+        case 'branchmanager':
+          apiEndpoint = '/api/login/branchmanager';
+          break;
+        case 'cashier':
+          apiEndpoint = '/api/login/cashier';
+          break;
+        case 'dataentryoperator':
+          apiEndpoint = '/api/login/dataentryoperator';
+          break;
+        default:
+          console.log('Invalid role');
+          return;
+      }
+  
+      // Use GET request with query parameters
+      const response = await axios.get(`${apiEndpoint}?email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`);
+  
+      console.log('Login response:', response);
+  
+      if (response.status === 200) {
+        console.log(`Navigating to ${role} page`);
+        switch (role) {
+          case 'superadmin':
+            navigate('/superadmin');
+            break;
+          case 'branchmanager':
+            navigate('/branchmanager');
+            break;
+          case 'cashier':
+            navigate('/cashier');
+            break;
+          case 'dataentryoperator':
+            navigate('/dataentryoperator');
+            break;
+          default:
+            console.log('Invalid role');
+        }
+      }
     } catch (error) {
       console.error('Login failed:', error);
       if (error.response) {
-        console.error('Response data:', error.response.data);
-        console.error('Response status:', error.response.status);
-        console.error('Response headers:', error.response.headers);
+        console.error('Error details:', error.response.data);
       }
     }
   };
@@ -53,10 +95,7 @@ const LoginPage = () => {
     <BackgroundBox>
       <LoginBox>
         <Typography variant="h4" component="h1" gutterBottom>
-          Welcome Back
-        </Typography>
-        <Typography variant="body1" gutterBottom>
-          Please login to your account
+          Login as {role.charAt(0).toUpperCase() + role.slice(1)}
         </Typography>
         <form onSubmit={handleLogin}>
           <StyledTextField
@@ -86,9 +125,6 @@ const LoginPage = () => {
             Login
           </Button>
         </form>
-        <Typography variant="body2" sx={{ marginTop: '20px' }}>
-          Don't have an account? <a href="#">Sign up</a>
-        </Typography>
       </LoginBox>
     </BackgroundBox>
   );

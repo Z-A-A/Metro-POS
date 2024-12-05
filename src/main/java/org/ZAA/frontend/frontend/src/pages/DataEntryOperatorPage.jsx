@@ -26,6 +26,7 @@ const DataEntryOperatorPage = () => {
   const [vendors, setVendors] = useState([]);
   const [selectedVendor, setSelectedVendor] = useState(null);
   const [open, setOpen] = useState(false);
+  const [productFormOpen, setProductFormOpen] = useState(false);
   const [formData, setFormData] = useState({
     vendorID: '',
     vendorName: '',
@@ -33,6 +34,21 @@ const DataEntryOperatorPage = () => {
     vendorPhone: '',
     branchCode: ''
   });
+  const [productFormData, setProductFormData] = useState({
+    id: '',
+    name: '',
+    originalPrice: '',
+    salePrice: '',
+    priceByUnit: '',
+    priceByCarton: '',
+    category: '',
+    description: '',
+    branchCode: '',
+    vendorCode: '',
+    quantity: ''
+  });
+  const [success, setSuccess] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     fetchVendors();
@@ -64,10 +80,26 @@ const DataEntryOperatorPage = () => {
     setOpen(false);
   };
 
+  const handleProductFormOpen = () => {
+    setProductFormOpen(true);
+  };
+
+  const handleProductFormClose = () => {
+    setProductFormOpen(false);
+  };
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
+      [name]: value
+    });
+  };
+
+  const handleProductFormChange = (e) => {
+    const { name, value } = e.target;
+    setProductFormData({
+      ...productFormData,
       [name]: value
     });
   };
@@ -77,10 +109,18 @@ const DataEntryOperatorPage = () => {
     return vendorID && vendorName && vendorAddress && vendorPhone && branchCode;
   };
 
+  const validateProductForm = () => {
+    const { id, name, originalPrice, salePrice, priceByUnit, priceByCarton, category, description, branchCode, vendorCode, quantity } = productFormData;
+    return id && name && originalPrice && salePrice && priceByUnit && priceByCarton && category && description && branchCode && vendorCode && quantity;
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!validateForm()) return;
-  
+    if (!validateForm()) {
+      setError('All fields are required.');
+      return;
+    }
+
     try {
       const params = new URLSearchParams({
         vendorID: formData.vendorID,
@@ -89,12 +129,13 @@ const DataEntryOperatorPage = () => {
         vendorPhone: formData.vendorPhone,
         branchCode: formData.branchCode
       });
-  
+
       const response = await axios.post(`/api/vendors/createVendor?${params.toString()}`);
-  
+
       if (response.data) {
         console.log('Vendor created successfully:', response.data);
         setVendors((prevVendors) => [...prevVendors, response.data]);
+        setSuccess('Vendor created successfully!');
         setTimeout(() => {
           handleClose();
           setFormData({
@@ -108,7 +149,62 @@ const DataEntryOperatorPage = () => {
       }
     } catch (error) {
       console.error('Error creating vendor:', error);
-      console.log(error.response?.data || 'Error creating vendor');
+      setError(error.response?.data?.message || 'Error creating vendor');
+    }
+  };
+
+  const handleProductSubmit = async (e) => {
+    e.preventDefault();
+    console.log('handleProductSubmit called');
+    
+    if (!validateProductForm()) {
+      setError('All fields are required.');
+      console.log('Validation failed: All fields are required.');
+      return;
+    }
+  
+    try {
+      const params = new URLSearchParams({
+        id: parseInt(productFormData.id, 10), // Ensure id is an integer
+        name: productFormData.name,
+        originalPrice: parseFloat(productFormData.originalPrice),
+        salePrice: parseFloat(productFormData.salePrice),
+        priceByUnit: parseFloat(productFormData.priceByUnit),
+        priceByCarton: parseFloat(productFormData.priceByCarton),
+        category: productFormData.category,
+        description: productFormData.description,
+        branchCode: productFormData.branchCode,
+        vendorCode: productFormData.vendorCode,
+        quantity: parseInt(productFormData.quantity, 10)
+      });
+  
+      console.log('Sending product data:', params.toString());
+  
+      const response = await axios.post(`/api/products/createProduct?${params.toString()}`);
+  
+      if (response.data) {
+        console.log('Product created successfully:', response.data);
+        setSuccess('Product created successfully!');
+        setTimeout(() => {
+          handleProductFormClose();
+          setProductFormData({
+            id: '',
+            name: '',
+            originalPrice: '',
+            salePrice: '',
+            priceByUnit: '',
+            priceByCarton: '',
+            category: '',
+            description: '',
+            branchCode: '',
+            vendorCode: '',
+            quantity: ''
+          });
+        }, 1500);
+      }
+    } catch (error) {
+      console.error('Error creating product:', error);
+      setError(error.response?.data?.message || 'Error creating product');
     }
   };
 
@@ -132,6 +228,9 @@ const DataEntryOperatorPage = () => {
           </Button>
           <Button variant="outlined" color="error" startIcon={<Delete />}>
             Remove Vendor
+          </Button>
+          <Button variant="contained" color="primary" startIcon={<Add />} onClick={handleProductFormOpen}>
+            Add Product
           </Button>
         </Box>
       </Sidebar>
@@ -208,8 +307,136 @@ const DataEntryOperatorPage = () => {
           <Button onClick={handleSubmit}>Add</Button>
         </DialogActions>
       </Dialog>
+
+      {/* Add Product Dialog */}
+      <Dialog open={productFormOpen} onClose={handleProductFormClose}>
+        <DialogTitle>Add Product</DialogTitle>
+        <DialogContent>
+          <TextField
+            autoFocus
+            margin="dense"
+            name="id"
+            label="Product ID"
+            type="number"
+            fullWidth
+            variant="standard"
+            value={productFormData.id}
+            onChange={handleProductFormChange}
+          />
+          <TextField
+            margin="dense"
+            name="name"
+            label="Product Name"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={productFormData.name}
+            onChange={handleProductFormChange}
+          />
+          <TextField
+            margin="dense"
+            name="originalPrice"
+            label="Original Price"
+            type="number"
+            fullWidth
+            variant="standard"
+            value={productFormData.originalPrice}
+            onChange={handleProductFormChange}
+          />
+          <TextField
+            margin="dense"
+            name="salePrice"
+            label="Sale Price"
+            type="number"
+            fullWidth
+            variant="standard"
+            value={productFormData.salePrice}
+            onChange={handleProductFormChange}
+          />
+          <TextField
+            margin="dense"
+            name="priceByUnit"
+            label="Price by Unit"
+            type="number"
+            fullWidth
+            variant="standard"
+            value={productFormData.priceByUnit}
+            onChange={handleProductFormChange}
+          />
+          <TextField
+            margin="dense"
+            name="priceByCarton"
+            label="Price by Carton"
+            type="number"
+            fullWidth
+            variant="standard"
+            value={productFormData.priceByCarton}
+            onChange={handleProductFormChange}
+          />
+          <TextField
+            margin="dense"
+            name="category"
+            label="Category"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={productFormData.category}
+            onChange={handleProductFormChange}
+          />
+          <TextField
+            margin="dense"
+            name="description"
+            label="Description"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={productFormData.description}
+            onChange={handleProductFormChange}
+          />
+          <TextField
+            margin="dense"
+            name="branchCode"
+            label="Branch Code"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={productFormData.branchCode}
+            onChange={handleProductFormChange}
+          />
+          <TextField
+            margin="dense"
+            name="vendorCode"
+            label="Vendor Code"
+            type="text"
+            fullWidth
+            variant="standard"
+            value={productFormData.vendorCode}
+            onChange={handleProductFormChange}
+          />
+          <TextField
+            margin="dense"
+            name="quantity"
+            label="Quantity"
+            type="number"
+            fullWidth
+            variant="standard"
+            value={productFormData.quantity}
+            onChange={handleProductFormChange}
+          />
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleProductFormClose}>Cancel</Button>
+          <Button onClick={handleProductSubmit}>Add</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };
 
 export default DataEntryOperatorPage;
+
+
+
+
+
+

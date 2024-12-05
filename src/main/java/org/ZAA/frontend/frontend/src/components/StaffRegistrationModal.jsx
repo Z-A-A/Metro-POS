@@ -168,6 +168,7 @@ const StaffRegistrationModal = ({ open, handleClose, staffRole }) => {
           Cancel
         </Button>
         <Button 
+         name="Submit"
           onClick={handleSubmit}
           variant="contained"
           sx={{
