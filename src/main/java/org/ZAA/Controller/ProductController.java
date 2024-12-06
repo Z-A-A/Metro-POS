@@ -16,21 +16,11 @@ import java.util.List;
 @Component
 @RestController
 @RequestMapping("/api/products")
-public class ProductController
-{
+public class ProductController {
 
     private final String uploadDir = "src/images"; // Set the directory path here
 
     public ProductController() {
-    }
-
-    @PostMapping("/createProduct")
-    public Product createProduct(@RequestParam int id, @RequestParam String name, @RequestParam double originalPrice, @RequestParam double salePrice, @RequestParam double priceByUnit, @RequestParam double priceByCarton, @RequestParam String category, @RequestParam String description, @RequestParam String branchCode, @RequestParam int vendorId, @RequestParam int quantity, @RequestParam("image") MultipartFile image) {
-        String imagePath = saveImage(image);
-        Product newProduct = new Product(id, name, originalPrice, salePrice, priceByUnit, priceByCarton, category, description, branchCode, vendorId, quantity, imagePath);
-        // ALSO ADD IN DATABASE HERE ===============================
-        System.out.println("PRODUCT ADDED SUCCESSFULLY: " + newProduct.getName());
-        return newProduct;
     }
 
     private String saveImage(MultipartFile image) {
@@ -48,33 +38,48 @@ public class ProductController
         }
     }
 
-    @PostMapping("/updateProduct")
-    public Product updateProduct(@RequestParam int id, @RequestParam String name, @RequestParam double originalPrice, @RequestParam double salePrice, @RequestParam double priceByUnit, @RequestParam double priceByCarton, @RequestParam int category, @RequestParam String description, @RequestParam String branchCode, @RequestParam int vendorId, @RequestParam int quantity) {
-        // Fetch the product from the database using the id
-        // Product existingProduct = fetchProductById(id);
+    private byte[] loadImage(String imagePath) {
+        try {
+            Path path = Paths.get(imagePath);
+            return Files.readAllBytes(path);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to load image", e);
+        }
+    }
 
-        // Update the product details
-        // existingProduct.setOriginalPrice(originalPrice);
-        // existingProduct.setSalePrice(salePrice);
-        // existingProduct.setPricebyUnit(priceByUnit);
-        // existingProduct.setPricebyCarton(priceByCarton);
-        // existingProduct.setCategory(category);
-
-        // Save the updated product back to the database
-        // saveProduct(existingProduct);
-
-        // System.out.println("PRODUCT UPDATED SUCCESSFULLY: " + existingProduct.getName());
-        // return existingProduct;
-        return null;
+    @PostMapping("/createProduct")
+    public Product createProduct(@RequestParam int id, @RequestParam String name, @RequestParam double originalPrice, @RequestParam double salePrice, @RequestParam double priceByUnit, @RequestParam double priceByCarton, @RequestParam String category, @RequestParam String description, @RequestParam String branchCode, @RequestParam int vendorId, @RequestParam int quantity, @RequestParam("image") MultipartFile image) throws IOException {
+        String imagePath = saveImage(image);
+        Product newProduct = new Product(id, name, originalPrice, salePrice, priceByUnit, priceByCarton, category, description, branchCode, vendorId, quantity, image.getBytes(),imagePath);
+        // ALSO ADD IN DATABASE HERE ===============================
+        System.out.println("PRODUCT ADDED SUCCESSFULLY: " + newProduct.getName());
+        return newProduct;
     }
 
     @PostMapping("/getProductByBranchCode")
     public List<Product> getProductByBranchCode(@RequestParam String branchCode) {
         // Fetch products from the database using the branch code
-        // List<Product> products = fetchProductsByBranchCode(branchCode);
-        // System.out.println("PRODUCTS FETCHED SUCCESSFULLY FOR BRANCH: " + branchCode);
-        // return products;
-
+        //List<Product> products = fetchProductsByBranchCode(branchCode);
+       // for (Product product : products) {
+         //   byte[] imageData = loadImage(product.getImagePath());
+           // product.setImage(imageData);
+        //}
+       // System.out.println("PRODUCTS FETCHED SUCCESSFULLY FOR BRANCH: " + branchCode);
         return null;
     }
+
+    @PostMapping("/getProductByVendorId")
+    public List<Product> getProductByVendorId(@RequestParam String branchCode, @RequestParam int vendorId) {
+        // Fetch products from the database using the vendor ID
+        //List<Product> products = fetchProductsByVendorId(vendorId);
+        //for (Product product : products) {
+          //  byte[] imageData = loadImage(product.getImagePath());
+            //product.setImage(imageData);
+        //}
+        //System.out.println("PRODUCTS FETCHED SUCCESSFULLY FOR VENDOR: " + vendorId);
+        return null;
+    }
+
+
+
 }
