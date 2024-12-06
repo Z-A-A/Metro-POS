@@ -2,6 +2,7 @@ package org.ZAA.Controller;
 
 import java.util.List;
 
+import org.ZAA.backend.Controller.BillController;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -99,6 +100,8 @@ public class Bill
         newBill.setTotalAmount(calculateTotalAmount(products));
 
         // Add the bill to the database
+        BillController billController = new BillController();
+        billController.addBill(newBill);
         //remove quantitites from the products table in database
 
         return newBill;

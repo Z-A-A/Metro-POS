@@ -22,7 +22,6 @@ public class ProductController {
 
     public ProductController() {
     }
-
     private String saveImage(MultipartFile image) {
         if (image.isEmpty()) {
             throw new RuntimeException("No image provided");
