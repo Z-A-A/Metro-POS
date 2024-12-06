@@ -26,7 +26,7 @@ public class Bill
     private double totalAmount;
 
 
-    Bill()
+    public Bill()
     {
 
     }

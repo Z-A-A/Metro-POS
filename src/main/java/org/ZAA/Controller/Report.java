@@ -19,6 +19,7 @@ public class Report
     private double sales;
     private double remainingStock;
     private double profit;
+    private String branchCode;
 
     public Report()
     {
@@ -63,10 +64,19 @@ public class Report
     }
 
 
+    @GetMapping("/report/overallBranches")
+    public Report getOverallReport()
+    {
+        // Implement logic to fetch overall's report for the all branches
+        // YAHAN PR EUK REPORT KA OBJECT BANAO AUR USKO RETURN KARO
+        return null;
+    }
+
     @GetMapping("/report/today")
     public Report getTodayReport(@RequestParam String branchCode)
     {
         // Implement logic to fetch today's report for the given branch code
+        // YAHAN PR EUK REPORT KA OBJECT BANAO AUR USKO RETURN KARO
         return null;
     }
 
@@ -74,6 +84,7 @@ public class Report
     public Report getWeeklyReport(@RequestParam String branchCode)
     {
         // Implement logic to fetch weekly report for the given branch code
+        // YAHAN PR EUK REPORT KA OBJECT BANAO AUR USKO RETURN KARO
         return null;
     }
 
@@ -81,6 +92,7 @@ public class Report
     public Report getMonthlyReport(@RequestParam String branchCode)
     {
         // Implement logic to fetch monthly report for the given branch code
+        // YAHAN PR EUK REPORT KA OBJECT BANAO AUR USKO RETURN KARO
         return null;
     }
 
@@ -89,6 +101,7 @@ public class Report
     {
 
         // Implement logic to fetch yearly report for the given branch code
+        // YAHAN PR EUK REPORT KA OBJECT BANAO AUR USKO RETURN KARO
         return null;
     }
 
@@ -96,8 +109,8 @@ public class Report
     public Report getRangeReport(@RequestParam String branchCode, @RequestParam String startDate, @RequestParam String endDate)
     {
         // Implement logic to fetch report for the specified date range for the given branch code
+        // YAHAN PR EUK REPORT KA OBJECT BANAO AUR USKO RETURN KARO
         return null;
     }
-
 
 }
