@@ -84,12 +84,14 @@ CREATE TABLE Products (
 CREATE TABLE Sales (
                        SaleID INT AUTO_INCREMENT PRIMARY KEY,
                        SaleDate TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                        BillNumber VARCHAR(50) ,
                        BranchCode VARCHAR(20),
                        ProductID INTEGER,
                        Quantity INTEGER NOT NULL,
                        UnitPrice DECIMAL(10, 2) NOT NULL,
                        TotalAmount DECIMAL(10, 2) NOT NULL,
                        CashierUserID INTEGER,
+                        FOREIGN KEY (BillNumber) REFERENCES Bills(BillNumber),
                        FOREIGN KEY (BranchCode) REFERENCES Branches(BranchCode),
                        FOREIGN KEY (ProductID) REFERENCES Products(ProductID),
                        FOREIGN KEY (CashierUserID) REFERENCES Cashier(EmployeeNo)
@@ -106,4 +108,14 @@ CREATE TABLE Reports (
                          RemainingStock INTEGER,
                          GeneratedAt TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                          FOREIGN KEY (BranchCode) REFERENCES Branches(BranchCode)
+);
+
+CREATE TABLE Bills (
+                       BillID INT AUTO_INCREMENT PRIMARY KEY,
+                       BillNumber VARCHAR(50) UNIQUE NOT NULL,
+                       BranchCode VARCHAR(20) NOT NULL,
+                       CashierName VARCHAR(100) NOT NULL,
+                       Date DATE NOT NULL,
+                       TotalAmount DECIMAL(10, 2) NOT NULL,
+                       FOREIGN KEY (BranchCode) REFERENCES Branches(BranchCode)
 );

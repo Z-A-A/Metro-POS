@@ -14,8 +14,8 @@ public class Product {
     private int quantity;
     private String imagePath; // Remove this field
     private byte[] image; // New field for image data
-
     public Product(int id, String name, double originalPrice, double salePrice, double priceByUnit, double priceByCarton, String category, String description, String branchCode, int vendorId, int quantity, byte[] image, String imagePath) {
+
         this.id = id;
         this.name = name;
         this.originalPrice = originalPrice;
@@ -25,7 +25,9 @@ public class Product {
         this.category = category;
         this.description = description;
         this.branchCode = branchCode;
+
         this.vendorId = vendorId;
+
         this.quantity = quantity;
         this.image = image; // Initialize the new field
         this.imagePath = imagePath; // Remove this line
@@ -107,13 +109,13 @@ public class Product {
     public void setSalePrice(double salePrice) {
         this.salePrice = salePrice;
     }
-
     public int getVendorId() {
         return vendorId;
     }
 
     public void setVendorId(int vendorId) {
         this.vendorId = vendorId;
+
     }
 
     public int getQuantity() {
