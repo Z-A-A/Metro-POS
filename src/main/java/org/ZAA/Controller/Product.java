@@ -17,11 +17,11 @@ public class Product
     private String category;
     private String description;
     private String branchCode;
-    private String vendorName;
+    private int VendorID;
     private int quantity;
     private String imagePath;
 
-    public Product(int id, String name, double originalPrice, double salePrice, double priceByUnit, double priceByCarton, String category, String description, String branchCode, String vendorCode, int quantity, String imagePath) {
+    public Product(int id, String name, double originalPrice, double salePrice, double priceByUnit, double priceByCarton, String category, String description, String branchCode, int vendorCode, int quantity, String imagePath) {
         this.id = id;
         this.name = name;
         this.originalPrice = originalPrice;
@@ -31,7 +31,7 @@ public class Product
         this.category = category;
         this.description = description;
         this.branchCode = branchCode;
-        this.vendorName = vendorCode;
+        this.VendorID = vendorCode;
         this.quantity = quantity;
         this.imagePath = imagePath; // Initialize the new field
     }
@@ -115,12 +115,12 @@ public class Product
         this.salePrice = salePrice;
     }
 
-    public String getVendorName() {
-        return vendorName;
+    public int getVendorName() {
+        return VendorID;
     }
 
-    public void setVendorName(String vendorName) {
-        this.vendorName = vendorName;
+    public void setVendorName(int vendorID) {
+        this.VendorID = vendorID;
     }
 
     public int getQuantity() {

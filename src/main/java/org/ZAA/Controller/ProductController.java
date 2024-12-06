@@ -25,7 +25,7 @@ public class ProductController
     }
 
     @PostMapping("/createProduct")
-    public Product createProduct(@RequestParam int id, @RequestParam String name, @RequestParam double originalPrice, @RequestParam double salePrice, @RequestParam double priceByUnit, @RequestParam double priceByCarton, @RequestParam String category, @RequestParam String description, @RequestParam String branchCode, @RequestParam String vendorCode, @RequestParam int quantity, @RequestParam("image") MultipartFile image) {
+    public Product createProduct(@RequestParam int id, @RequestParam String name, @RequestParam double originalPrice, @RequestParam double salePrice, @RequestParam double priceByUnit, @RequestParam double priceByCarton, @RequestParam String category, @RequestParam String description, @RequestParam String branchCode, @RequestParam int vendorCode, @RequestParam int quantity, @RequestParam("image") MultipartFile image) {
         String imagePath = saveImage(image);
         Product newProduct = new Product(id, name, originalPrice, salePrice, priceByUnit, priceByCarton, category, description, branchCode, vendorCode, quantity, imagePath);
         // ALSO ADD IN DATABASE HERE ===============================

@@ -1,23 +1,15 @@
 package org.ZAA.Controller;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.ZAA.backend.Controller.ReportController;
 import org.springframework.stereotype.Component;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import java.util.List;
 
 @Component
 public class Report
 {
     private double sales;
-    private double remainingStock;
+    private int remainingStock;
     private double profit;
     private String branchCode;
 
@@ -26,7 +18,7 @@ public class Report
 
     }
 
-    public Report(double sales, double remainingStock, double profit)
+    public Report(double sales, int remainingStock, double profit)
     {
         this.sales = sales;
         this.remainingStock = remainingStock;
@@ -43,12 +35,12 @@ public class Report
         this.sales = sales;
     }
 
-    public double getRemainingStock()
+    public int getRemainingStock()
     {
         return remainingStock;
     }
 
-    public void setRemainingStock(double remainingStock)
+    public void setRemainingStock(int remainingStock)
     {
         this.remainingStock = remainingStock;
     }
@@ -58,9 +50,18 @@ public class Report
         return profit;
     }
 
+    public String getBranchCode() {
+        return branchCode;
+    }
+
     public void setProfit(double profit)
     {
         this.profit = profit;
+    }
+
+    public void setBranchCode(String branchCode)
+    {
+        this.branchCode = branchCode;
     }
 
 
@@ -76,24 +77,27 @@ public class Report
     public Report getTodayReport(@RequestParam String branchCode)
     {
         // Implement logic to fetch today's report for the given branch code
+        ReportController reportController = new ReportController();
+        return reportController.getDailyReport(branchCode);
         // YAHAN PR EUK REPORT KA OBJECT BANAO AUR USKO RETURN KARO
-        return null;
     }
 
     @GetMapping("/report/weekly")
     public Report getWeeklyReport(@RequestParam String branchCode)
     {
         // Implement logic to fetch weekly report for the given branch code
+        ReportController reportController = new ReportController();
+        return reportController.getWeeklyReport(branchCode);
         // YAHAN PR EUK REPORT KA OBJECT BANAO AUR USKO RETURN KARO
-        return null;
     }
 
     @GetMapping("/report/monthly")
     public Report getMonthlyReport(@RequestParam String branchCode)
     {
         // Implement logic to fetch monthly report for the given branch code
+        ReportController reportController = new ReportController();
+        return reportController.getMonthlyReport(branchCode);
         // YAHAN PR EUK REPORT KA OBJECT BANAO AUR USKO RETURN KARO
-        return null;
     }
 
     @GetMapping("/report/yearly")
@@ -101,16 +105,18 @@ public class Report
     {
 
         // Implement logic to fetch yearly report for the given branch code
+        ReportController reportController = new ReportController();
+        return reportController.getYearlyReport(branchCode);
         // YAHAN PR EUK REPORT KA OBJECT BANAO AUR USKO RETURN KARO
-        return null;
     }
 
     @GetMapping("/report/range")
     public Report getRangeReport(@RequestParam String branchCode, @RequestParam String startDate, @RequestParam String endDate)
     {
         // Implement logic to fetch report for the specified date range for the given branch code
+        ReportController reportController = new ReportController();
+        return reportController.getRangeReport(branchCode, startDate, endDate);
         // YAHAN PR EUK REPORT KA OBJECT BANAO AUR USKO RETURN KARO
-        return null;
     }
 
 }
