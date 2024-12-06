@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ea2db64-6a30-4e9f-adef-6222c9bc4c94" name="Changes" comment="Tests, Report, Product image scene implemented.">
+    <list default="true" id="4ea2db64-6a30-4e9f-adef-6222c9bc4c94" name="Changes" comment="Vendor Id fixed">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/Product.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/ProductController.java" afterDir="false" />
@@ -224,7 +224,8 @@
       <workItem from="1733481488377" duration="2000" />
       <workItem from="1733498524827" duration="4000" />
       <workItem from="1733501577319" duration="3844000" />
-      <workItem from="1733506880929" duration="262000" />
+      <workItem from="1733506880929" duration="1250000" />
+      <workItem from="1733509809209" duration="1204000" />
     </task>
     <task id="LOCAL-00001" summary="Implemented Backend Object classes and Login, Signup and Branch creation functions.">
       <option name="closed" value="true" />
@@ -250,7 +251,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733505309020</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="Vendor Id fixed">
+      <option name="closed" value="true" />
+      <created>1733507187784</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1733507187784</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -283,6 +292,7 @@
     <MESSAGE value="Implemented Backend Object classes and Login, Signup and Branch creation functions." />
     <MESSAGE value="Implemented backend REST api functions and converted previously developed." />
     <MESSAGE value="Tests, Report, Product image scene implemented." />
-    <option name="LAST_COMMIT_MESSAGE" value="Tests, Report, Product image scene implemented." />
+    <MESSAGE value="Vendor Id fixed" />
+    <option name="LAST_COMMIT_MESSAGE" value="Vendor Id fixed" />
   </component>
 </project>
