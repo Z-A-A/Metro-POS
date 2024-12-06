@@ -4,19 +4,21 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ea2db64-6a30-4e9f-adef-6222c9bc4c94" name="Changes" comment="Implemented Backend Object classes and Login, Signup and Branch creation functions.">
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/ProductController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/VendorController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="4ea2db64-6a30-4e9f-adef-6222c9bc4c94" name="Changes" comment="Implemented billing, product, vendor, cashier, report API'S.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Tests/BillTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Tests/BranchManagerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Tests/METRO_POS_MAIN_CONTROLLER_CODE_Test.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Tests/SuperAdminTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Tests/VendorControllerTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/BACKEND_SERVER.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/BACKEND_SERVER.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/Bill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/Bill.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/BranchManagement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/BranchManagement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/Cashier.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/Cashier.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/METRO_POS_MAIN_CONTROLLER_CODE.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/METRO_POS_MAIN_CONTROLLER_CODE.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/Product.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/Product.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/ProductController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/ProductController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/Report.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/Report.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/SuperAdmin.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/SuperAdmin.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/Vendor.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/Vendor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/VendorController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/VendorController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -66,35 +68,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Application.METRO_POS_MAIN_CONTROLLER_CODE.executor&quot;: &quot;Run&quot;,
-    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
-    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
-    &quot;JavaScript Debug.test.html.executor&quot;: &quot;Run&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;Spring Boot.BACKEND_APPLICATION_SERVER.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.BACKEND_SERVER.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.METRO_POS_MAIN_CONTROLLER_CODE.executor&quot;: &quot;Run&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;azfar&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
-    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Application.METRO_POS_MAIN_CONTROLLER_CODE.executor": "Run",
+    "Application.Main.executor": "Run",
+    "DefaultHtmlFileTemplate": "HTML File",
+    "JUnit.BillTest.executor": "Run",
+    "JUnit.BranchManagerTest.executor": "Run",
+    "JUnit.METRO_POS_MAIN_CONTROLLER_CODE_Test.executor": "Run",
+    "JUnit.SuperAdminTest.executor": "Run",
+    "JUnit.VendorControllerTest.executor": "Run",
+    "JavaScript Debug.test.html.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.BACKEND_APPLICATION_SERVER.executor": "Run",
+    "Spring Boot.BACKEND_SERVER.executor": "Run",
+    "Spring Boot.METRO_POS_MAIN_CONTROLLER_CODE.executor": "Run",
+    "git-widget-placeholder": "azfar",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "SDKs",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "run.configurations.included.in.services": "true",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RunDashboard">
     <option name="configurationTypes">
       <set>
@@ -105,72 +112,89 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.BACKEND_SERVER">
-    <configuration name="METRO_POS_MAIN_CONTROLLER_CODE" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="org.ZAA.Controller.METRO_POS_MAIN_CONTROLLER_CODE" />
+  <component name="RunManager" selected="JUnit.VendorControllerTest">
+    <configuration name="BillTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="METRO-POS" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.ZAA.Controller.*" />
+          <option name="PATTERN" value="org.ZAA.Tests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="org.ZAA.Tests" />
+      <option name="MAIN_CLASS_NAME" value="org.ZAA.Tests.BillTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="test.html" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:63342/Metro-POS/org/ZAA/static/test.html" useBuiltInWebServerPort="true">
-      <method v="2" />
-    </configuration>
-    <configuration name="BACKEND_APPLICATION_SERVER" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+    <configuration name="BranchManagerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="METRO-POS" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="org.ZAA.Controller.BACKEND_APPLICATION_SERVER" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.ZAA.Controller.*" />
+          <option name="PATTERN" value="org.ZAA.Tests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="org.ZAA.Tests" />
+      <option name="MAIN_CLASS_NAME" value="org.ZAA.Tests.BranchManagerTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="BACKEND_SERVER" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+    <configuration name="METRO_POS_MAIN_CONTROLLER_CODE_Test" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="METRO-POS" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="org.ZAA.Controller.BACKEND_SERVER" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.ZAA.Controller.*" />
+          <option name="PATTERN" value="org.ZAA.Tests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="org.ZAA.Tests" />
+      <option name="MAIN_CLASS_NAME" value="org.ZAA.Tests.METRO_POS_MAIN_CONTROLLER_CODE_Test" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="METRO_POS_MAIN_CONTROLLER_CODE" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+    <configuration name="SuperAdminTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="METRO-POS" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="org.ZAA.Controller.METRO_POS_MAIN_CONTROLLER_CODE" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="org.ZAA.Controller.*" />
+          <option name="PATTERN" value="org.ZAA.Tests.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
+      <option name="PACKAGE_NAME" value="org.ZAA.Tests" />
+      <option name="MAIN_CLASS_NAME" value="org.ZAA.Tests.SuperAdminTest" />
+      <option name="TEST_OBJECT" value="class" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="VendorControllerTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="METRO-POS" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="org.ZAA.Tests.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="org.ZAA.Tests" />
+      <option name="MAIN_CLASS_NAME" value="org.ZAA.Tests.VendorControllerTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.METRO_POS_MAIN_CONTROLLER_CODE" />
-        <item itemvalue="Spring Boot.BACKEND_SERVER" />
-        <item itemvalue="Spring Boot.BACKEND_APPLICATION_SERVER" />
-        <item itemvalue="JavaScript Debug.test.html" />
-        <item itemvalue="Application.METRO_POS_MAIN_CONTROLLER_CODE" />
+        <item itemvalue="JUnit.VendorControllerTest" />
+        <item itemvalue="JUnit.SuperAdminTest" />
+        <item itemvalue="JUnit.METRO_POS_MAIN_CONTROLLER_CODE_Test" />
+        <item itemvalue="JUnit.BranchManagerTest" />
+        <item itemvalue="JUnit.BillTest" />
       </list>
     </recent_temporary>
   </component>
@@ -200,6 +224,17 @@
       <workItem from="1732470352276" duration="10000" />
       <workItem from="1732550134915" duration="9915000" />
       <workItem from="1732981454481" duration="14607000" />
+      <workItem from="1733007361729" duration="3000" />
+      <workItem from="1733053819020" duration="25000" />
+      <workItem from="1733119548082" duration="372000" />
+      <workItem from="1733159169977" duration="416000" />
+      <workItem from="1733165619209" duration="2778000" />
+      <workItem from="1733376111429" duration="422000" />
+      <workItem from="1733398027162" duration="401000" />
+      <workItem from="1733429103131" duration="4000" />
+      <workItem from="1733481488377" duration="2000" />
+      <workItem from="1733498524827" duration="4000" />
+      <workItem from="1733501577319" duration="3661000" />
     </task>
     <task id="LOCAL-00001" summary="Implemented Backend Object classes and Login, Signup and Branch creation functions.">
       <option name="closed" value="true" />

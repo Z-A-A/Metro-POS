@@ -19,6 +19,7 @@ public class VendorController
 
     }
 
+
     @PostMapping("/createVendor")
     public Vendor createVendor(@RequestParam int vendorID, @RequestParam String vendorName, @RequestParam String vendorAddress, @RequestParam String vendorPhone, @RequestParam String branchCode) {
         Vendor newVendor = new Vendor(vendorID, vendorName, vendorAddress, vendorPhone, branchCode);
@@ -37,4 +38,6 @@ public class VendorController
 
         return null;
     }
+
+
 }

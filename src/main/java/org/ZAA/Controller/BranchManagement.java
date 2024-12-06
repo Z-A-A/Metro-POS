@@ -54,4 +54,9 @@ public class BranchManagement
         dataEntryOperators.add(dataEntryOperator);
         branch.incrementEmployeeCount();
     }
+
+    public void setBranch(Branch br001)
+    {
+        this.branch = br001;
+    }
 }
