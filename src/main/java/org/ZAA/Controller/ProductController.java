@@ -25,9 +25,9 @@ public class ProductController
     }
 
     @PostMapping("/createProduct")
-    public Product createProduct(@RequestParam int id, @RequestParam String name, @RequestParam double originalPrice, @RequestParam double salePrice, @RequestParam double priceByUnit, @RequestParam double priceByCarton, @RequestParam String category, @RequestParam String description, @RequestParam String branchCode, @RequestParam String vendorCode, @RequestParam int quantity, @RequestParam("image") MultipartFile image) {
+    public Product createProduct(@RequestParam int id, @RequestParam String name, @RequestParam double originalPrice, @RequestParam double salePrice, @RequestParam double priceByUnit, @RequestParam double priceByCarton, @RequestParam String category, @RequestParam String description, @RequestParam String branchCode, @RequestParam int vendorId, @RequestParam int quantity, @RequestParam("image") MultipartFile image) {
         String imagePath = saveImage(image);
-        Product newProduct = new Product(id, name, originalPrice, salePrice, priceByUnit, priceByCarton, category, description, branchCode, vendorCode, quantity, imagePath);
+        Product newProduct = new Product(id, name, originalPrice, salePrice, priceByUnit, priceByCarton, category, description, branchCode, vendorId, quantity, imagePath);
         // ALSO ADD IN DATABASE HERE ===============================
         System.out.println("PRODUCT ADDED SUCCESSFULLY: " + newProduct.getName());
         return newProduct;
@@ -49,7 +49,7 @@ public class ProductController
     }
 
     @PostMapping("/updateProduct")
-    public Product updateProduct(@RequestParam int id, @RequestParam String name, @RequestParam double originalPrice, @RequestParam double salePrice, @RequestParam double priceByUnit, @RequestParam double priceByCarton, @RequestParam int category, @RequestParam String description, @RequestParam String branchCode, @RequestParam String vendorCode, @RequestParam int quantity) {
+    public Product updateProduct(@RequestParam int id, @RequestParam String name, @RequestParam double originalPrice, @RequestParam double salePrice, @RequestParam double priceByUnit, @RequestParam double priceByCarton, @RequestParam int category, @RequestParam String description, @RequestParam String branchCode, @RequestParam int vendorId, @RequestParam int quantity) {
         // Fetch the product from the database using the id
         // Product existingProduct = fetchProductById(id);
 
