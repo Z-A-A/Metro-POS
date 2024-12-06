@@ -1,13 +1,6 @@
 package org.ZAA.Controller;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-
-public class Product
-{
+public class Product {
     private int id;
     private String name;
     private double originalPrice;
@@ -17,11 +10,12 @@ public class Product
     private String category;
     private String description;
     private String branchCode;
-    private int VendorID;
+    private int vendorId;
     private int quantity;
-    private String imagePath;
+    private String imagePath; // Remove this field
+    private byte[] image; // New field for image data
+    public Product(int id, String name, double originalPrice, double salePrice, double priceByUnit, double priceByCarton, String category, String description, String branchCode, int vendorId, int quantity, byte[] image, String imagePath) {
 
-    public Product(int id, String name, double originalPrice, double salePrice, double priceByUnit, double priceByCarton, String category, String description, String branchCode, int vendorCode, int quantity, String imagePath) {
         this.id = id;
         this.name = name;
         this.originalPrice = originalPrice;
@@ -31,17 +25,18 @@ public class Product
         this.category = category;
         this.description = description;
         this.branchCode = branchCode;
-        this.VendorID = vendorCode;
+
+        this.vendorId = vendorId;
+
         this.quantity = quantity;
-        this.imagePath = imagePath; // Initialize the new field
+        this.image = image; // Initialize the new field
+        this.imagePath = imagePath; // Remove this line
     }
 
-
-    public Product()
-    {
-
+    public Product() {
     }
 
+    // Getters and setters for all fields, including the new image field
 
     public String getBranchCode() {
         return branchCode;
@@ -114,13 +109,13 @@ public class Product
     public void setSalePrice(double salePrice) {
         this.salePrice = salePrice;
     }
-
-    public int getVendorName() {
-        return VendorID;
+    public int getVendorId() {
+        return vendorId;
     }
 
-    public void setVendorName(int vendorID) {
-        this.VendorID = vendorID;
+    public void setVendorId(int vendorId) {
+        this.vendorId = vendorId;
+
     }
 
     public int getQuantity() {
@@ -131,6 +126,15 @@ public class Product
         this.quantity = quantity;
     }
 
+    public byte[] getImage() {
+        return image;
+    }
+
+    public void setImage(byte[] image) {
+        this.image = image;
+    }
+
+
     public String getImagePath() {
         return imagePath;
     }
@@ -138,7 +142,4 @@ public class Product
     public void setImagePath(String imagePath) {
         this.imagePath = imagePath;
     }
-
-
-
 }
