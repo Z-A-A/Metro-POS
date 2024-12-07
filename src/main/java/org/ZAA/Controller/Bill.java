@@ -98,6 +98,7 @@ public class Bill
         newBill.setBillNumber(generateBillNumber());
         newBill.setDate(getCurrentDate());
         newBill.setTotalAmount(calculateTotalAmount(products));
+        newBill.setCashierName(getCashierName());
 
         // Add the bill to the database
         BillController billController = new BillController();
