@@ -1,5 +1,7 @@
 package org.ZAA.Controller;
 
+import org.ZAA.backend.Controller.CashierController;
+import org.ZAA.backend.Controller.DataEntryOperatorController;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -89,8 +91,15 @@ public class BranchManager
             if (branchManagement.getBranch().getBranchCode().equals(branchCode)) {
                 branchManagement.addCashier(newCashier);
                 // Add to DB here
-                System.out.println("CASHIER ADDED SUCCESSFULLY: " + newCashier.getName());
-                return true;
+                if(CashierController.addCashier(newCashier))
+                {
+                    System.out.println("CASHIER ADDED SUCCESSFULLY: " + newCashier.getName());
+                    return true;
+                }
+                else {
+                    System.out.println("CASHIER ADDITION FAILED");
+                    return false;
+                }
             }
         }
         System.out.println("CASHIER ADDITION FAILED");
@@ -105,8 +114,15 @@ public class BranchManager
             if (branchManagement.getBranch().getBranchCode().equals(branchCode)) {
                 branchManagement.addDataEntryOperator(newDataEntryOperator);
                 // Add to DB here
-                System.out.println("DATA ENTRY OPERATOR ADDED SUCCESSFULLY: " + newDataEntryOperator.getName());
-                return true;
+                if(DataEntryOperatorController.addDataEntryOperator(newDataEntryOperator))
+                {
+                    System.out.println("DATA ENTRY OPERATOR ADDED SUCCESSFULLY: " + newDataEntryOperator.getName());
+                    return true;
+                }
+                else {
+                    System.out.println("DATA ENTRY OPERATOR ADDITION FAILED");
+                    return false;
+                }
             }
         }
         System.out.println("DATA ENTRY OPERATOR ADDITION FAILED");

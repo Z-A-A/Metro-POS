@@ -51,6 +51,7 @@ public class ProductController {
         String imagePath = saveImage(image);
         Product newProduct = new Product(id, name, originalPrice, salePrice, priceByUnit, priceByCarton, category, description, branchCode, vendorId, quantity, image.getBytes(),imagePath);
         // ALSO ADD IN DATABASE HERE ===============================
+        org.ZAA.backend.Controller.ProductController.addProduct(newProduct);
         System.out.println("PRODUCT ADDED SUCCESSFULLY: " + newProduct.getName());
         return newProduct;
     }
@@ -58,24 +59,24 @@ public class ProductController {
     @PostMapping("/getProductByBranchCode")
     public List<Product> getProductByBranchCode(@RequestParam String branchCode) {
         // Fetch products from the database using the branch code
-        //List<Product> products = fetchProductsByBranchCode(branchCode);
-       // for (Product product : products) {
-         //   byte[] imageData = loadImage(product.getImagePath());
-           // product.setImage(imageData);
-        //}
-       // System.out.println("PRODUCTS FETCHED SUCCESSFULLY FOR BRANCH: " + branchCode);
+        List<Product> products= org.ZAA.backend.Controller.ProductController.getProductByBranchCode(branchCode);
+       for (Product product : products) {
+         byte[] imageData = loadImage(product.getImagePath());
+           product.setImage(imageData);
+        }
+       System.out.println("PRODUCTS FETCHED SUCCESSFULLY FOR BRANCH: " + branchCode);
         return null;
     }
 
     @PostMapping("/getProductByVendorId")
     public List<Product> getProductByVendorId(@RequestParam String branchCode, @RequestParam int vendorId) {
         // Fetch products from the database using the vendor ID
-        //List<Product> products = fetchProductsByVendorId(vendorId);
-        //for (Product product : products) {
-          //  byte[] imageData = loadImage(product.getImagePath());
-            //product.setImage(imageData);
-        //}
-        //System.out.println("PRODUCTS FETCHED SUCCESSFULLY FOR VENDOR: " + vendorId);
+        List<Product> products = org.ZAA.backend.Controller.ProductController.getProductByVendorId(vendorId, branchCode);
+        for (Product product : products) {
+           byte[] imageData = loadImage(product.getImagePath());
+           product.setImage(imageData);
+        }
+        System.out.println("PRODUCTS FETCHED SUCCESSFULLY FOR VENDOR: " + vendorId);
         return null;
     }
 

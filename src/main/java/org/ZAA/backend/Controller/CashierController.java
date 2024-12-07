@@ -17,7 +17,7 @@ public class CashierController {
     private static final String DB_PASSWORD = "Cr68DxeLq2";
 
     // Method to add a cashier to the database
-    public boolean addCashier(Cashier cashier) {
+    public static boolean addCashier(Cashier cashier) {
         String query = "INSERT INTO Cashier (Name, EmployeeNo, Email, Password, BranchCode, Salary) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
@@ -62,5 +62,22 @@ public class CashierController {
         }
 
         return cashiers;
+    }
+
+    public boolean changePassword(String email, String newPassword) {
+        String query = "UPDATE Cashier SET Password = ? WHERE Email = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, newPassword);
+            preparedStatement.setString(2, email);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

@@ -222,8 +222,16 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
             if (superAdmin.getEmail().equals(email) && superAdmin.getPassword().equals(oldPassword)) {
                 superAdmin.setPassword(newPassword);
                 //CHANGE IN DB HERE==============================
-                System.out.println("SUPER ADMIN PASSWORD CHANGED SUCCESSFULLY");
-                return true;
+                if(SuperAdminController.changePassword(email,newPassword))
+                {
+                    System.out.println("SUPER ADMIN PASSWORD CHANGED SUCCESSFULLY");
+                    return true;
+                }
+                else
+                {
+                    System.out.println("SUPER ADMIN PASSWORD CHANGE FAILED");
+                    return false;
+                }
             }
         }
         System.out.println("SUPER ADMIN PASSWORD CHANGE FAILED");
@@ -236,8 +244,17 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
             if (admin.getEmail().equals(email) && admin.getPassword().equals(oldPassword)) {
                 admin.setPassword(newPassword);
                 //CHANGE IN DB HERE==============================
-                System.out.println("BRANCH MANAGER PASSWORD CHANGED SUCCESSFULLY");
-                return true;
+                BranchManagerController branchManagerController = new BranchManagerController();
+                if(branchManagerController.changePassword(email,newPassword))
+                {
+                    System.out.println("BRANCH MANAGER PASSWORD CHANGED SUCCESSFULLY");
+                    return true;
+                }
+                else
+                {
+                    System.out.println("BRANCH MANAGER PASSWORD CHANGE FAILED");
+                    return false;
+                }
             }
         }
         System.out.println("BRANCH MANAGER PASSWORD CHANGE FAILED");
@@ -250,12 +267,19 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
             if (cashier.getEmail().equals(email) && cashier.getPassword().equals(oldPassword)) {
                 cashier.setPassword(newPassword);
                 //CHANGE IN DB HERE==============================
-                System.out.println("CASHIER PASSWORD CHANGED SUCCESSFULLY");
-                return true;
+                CashierController cashierController = new CashierController();
+                if(cashierController.changePassword(email, newPassword))
+                {
+                    System.out.println("CASHIER PASSWORD CHANGED SUCCESSFULLY");
+                    return true;
+                }
+                else
+                {
+                    System.out.println("CASHIER PASSWORD CHANGE FAILED");
+                    return false;
+
             }
         }
-        System.out.println("CASHIER PASSWORD CHANGE FAILED");
-        return false;
     }
 
     @PostMapping("/changePassword/dataentryoperator")
@@ -264,8 +288,17 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
             if (dataEntryOperator.getEmail().equals(email) && dataEntryOperator.getPassword().equals(oldPassword)) {
                 dataEntryOperator.setPassword(newPassword);
                 //CHANGE IN DB HERE==============================
-                System.out.println("DATA ENTRY OPERATOR PASSWORD CHANGED SUCCESSFULLY");
-                return true;
+                DataEntryOperatorController dataEntryOperatorController = new DataEntryOperatorController();
+                if(dataEntryOperatorController.changePassword(email, newPassword))
+                {
+                    System.out.println("CASHIER PASSWORD CHANGED SUCCESSFULLY");
+                    return true;
+                }
+                else
+                {
+                    System.out.println("CASHIER PASSWORD CHANGE FAILED");
+                    return false;
+                }
             }
         }
         System.out.println("DATA ENTRY OPERATOR PASSWORD CHANGE FAILED");
