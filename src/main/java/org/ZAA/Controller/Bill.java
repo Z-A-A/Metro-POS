@@ -91,7 +91,7 @@ public class Bill
     }
 
     @PostMapping("/generateBill")
-    public Bill generateBill(@RequestBody List<Product> products, @RequestParam String branchCode) {
+    public Bill generateBill(@RequestBody List<Product> products, @RequestParam String branchCode, @RequestParam String cashierName) {
         Bill newBill = new Bill();
         newBill.setProducts(products);
         newBill.setBranchCode(branchCode);
@@ -99,6 +99,7 @@ public class Bill
         newBill.setDate(getCurrentDate());
         newBill.setTotalAmount(calculateTotalAmount(products));
         newBill.setCashierName(getCashierName());
+        newBill.setCashierName(cashierName);
 
         // Add the bill to the database
         BillController billController = new BillController();
