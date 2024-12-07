@@ -19,7 +19,7 @@ public class BillController {
 
     // Method to add a bill to the database
     public boolean addBill(Bill bill) {
-        String query = "INSERT INTO Bills (BillNumber, BranchCode, CashierName, Date, TotalAmount) VALUES (?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Bills (BillNumber, BranchCode, CashierName, TotalAmount) VALUES (?, ?, ?, ?)";
 
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -27,8 +27,7 @@ public class BillController {
             preparedStatement.setString(1, bill.getBillNumber());
             preparedStatement.setString(2, bill.getBranchCode());
             preparedStatement.setString(3, bill.getCashierName());
-            preparedStatement.setString(4, bill.getDate());
-            preparedStatement.setDouble(5, bill.getTotalAmount());
+            preparedStatement.setDouble(4, bill.getTotalAmount());
 
             int rowsAffected = preparedStatement.executeUpdate();
             if (rowsAffected > 0) {
