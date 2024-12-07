@@ -4,9 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="4ea2db64-6a30-4e9f-adef-6222c9bc4c94" name="Changes" comment="Load image and save image functions implemented.">
+    <list default="true" id="4ea2db64-6a30-4e9f-adef-6222c9bc4c94" name="Changes" comment="Cashier Name in Bill fixed.">
+      <change afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/AdminDashboard.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_30_2024_8_41_AM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_30_2024_8_41_AM__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_30_2024_8_43_AM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_30_2024_8_43_AM__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_30_2024_7_21_AM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Update_at_11_30_2024_7_21_AM__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/Bill.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/ZAA/Controller/Bill.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -56,40 +62,40 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Application.METRO_POS_MAIN_CONTROLLER_CODE.executor": "Run",
-    "Application.Main.executor": "Run",
-    "DefaultHtmlFileTemplate": "HTML File",
-    "JUnit.BillTest.executor": "Run",
-    "JUnit.BranchManagerTest.executor": "Run",
-    "JUnit.METRO_POS_MAIN_CONTROLLER_CODE_Test.executor": "Run",
-    "JUnit.SuperAdminTest.executor": "Run",
-    "JUnit.VendorControllerTest.executor": "Run",
-    "JavaScript Debug.test.html.executor": "Run",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.BACKEND_APPLICATION_SERVER.executor": "Run",
-    "Spring Boot.BACKEND_SERVER.executor": "Run",
-    "Spring Boot.METRO_POS_MAIN_CONTROLLER_CODE.executor": "Run",
-    "git-widget-placeholder": "azfar-2",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "SDKs",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.2",
-    "run.configurations.included.in.services": "true",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.METRO_POS_MAIN_CONTROLLER_CODE.executor&quot;: &quot;Run&quot;,
+    &quot;Application.Main.executor&quot;: &quot;Run&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;JUnit.BillTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.BranchManagerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.METRO_POS_MAIN_CONTROLLER_CODE_Test.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.SuperAdminTest.executor&quot;: &quot;Run&quot;,
+    &quot;JUnit.VendorControllerTest.executor&quot;: &quot;Run&quot;,
+    &quot;JavaScript Debug.test.html.executor&quot;: &quot;Run&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;Spring Boot.BACKEND_APPLICATION_SERVER.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.BACKEND_SERVER.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.METRO_POS_MAIN_CONTROLLER_CODE.executor&quot;: &quot;Run&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;azfar-2&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;SDKs&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
+    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunDashboard">
     <option name="configurationTypes">
       <set>
@@ -234,6 +240,7 @@
       <workItem from="1733506880929" duration="1250000" />
       <workItem from="1733509809209" duration="1204000" />
       <workItem from="1733610011243" duration="156000" />
+      <workItem from="1733610592286" duration="1721000" />
     </task>
     <task id="LOCAL-00001" summary="Implemented Backend Object classes and Login, Signup and Branch creation functions.">
       <option name="closed" value="true" />
@@ -267,7 +274,15 @@
       <option name="project" value="LOCAL" />
       <updated>1733507187784</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Cashier Name in Bill fixed.">
+      <option name="closed" value="true" />
+      <created>1733610468351</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1733610468351</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -301,6 +316,7 @@
     <MESSAGE value="Implemented backend REST api functions and converted previously developed." />
     <MESSAGE value="Tests, Report, Product image scene implemented." />
     <MESSAGE value="Vendor Id fixed" />
-    <option name="LAST_COMMIT_MESSAGE" value="Vendor Id fixed" />
+    <MESSAGE value="Cashier Name in Bill fixed." />
+    <option name="LAST_COMMIT_MESSAGE" value="Cashier Name in Bill fixed." />
   </component>
 </project>
