@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Typography, InputBase, Dialog, DialogActions, DialogContent, DialogTitle, TextField } from '@mui/material';
+import { Box, Button, Typography, InputBase, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Fab } from '@mui/material';
 import { Add, Delete, Search } from '@mui/icons-material';
 import axios from 'axios';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 // Define Sidebar and SearchBar components
 const Sidebar = ({ children }) => (
@@ -25,6 +26,7 @@ const VendorCard = ({ children, onClick }) => (
 const DataEntryOperatorPage = () => {
   const [vendors, setVendors] = useState([]);
   const [selectedVendor, setSelectedVendor] = useState(null);
+  const [products, setProducts] = useState([]);
   const [open, setOpen] = useState(false);
   const [productFormOpen, setProductFormOpen] = useState(false);
   const [formData, setFormData] = useState({
@@ -56,7 +58,7 @@ const DataEntryOperatorPage = () => {
 
   const fetchVendors = async () => {
     try {
-      const response = await axios.get('/api/vendors/getAllVendors');
+      const response = await axios.post('/api/vendors/getAllVendors');
       if (Array.isArray(response.data)) {
         setVendors(response.data);
       } else {
@@ -68,8 +70,29 @@ const DataEntryOperatorPage = () => {
     }
   };
 
+  const fetchProductsByVendor = async (vendor) => {
+    try {
+      const response = await axios.post('/api/products/getProductByVendorId', null, {
+        params: {
+          branchCode: vendor.branchCode,
+          vendorId: vendor.vendorID
+        }
+      });
+
+      if (Array.isArray(response.data)) {
+        setProducts(response.data);
+      } else {
+        setProducts([]);
+      }
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      setProducts([]);
+    }
+  };
+
   const handleVendorClick = (vendor) => {
     setSelectedVendor(vendor);
+    fetchProductsByVendor(vendor);
   };
 
   const handleOpen = () => {
@@ -229,9 +252,7 @@ const DataEntryOperatorPage = () => {
           <Button variant="outlined" color="error" startIcon={<Delete />}>
             Remove Vendor
           </Button>
-          <Button variant="contained" color="primary" startIcon={<Add />} onClick={handleProductFormOpen}>
-            Add Product
-          </Button>
+          
         </Box>
       </Sidebar>
 
@@ -239,7 +260,15 @@ const DataEntryOperatorPage = () => {
       <Box sx={{ padding: '16px' }}>
         {selectedVendor ? (
           <>
-            {/* Render selected vendor details */}
+            <Typography variant="h6">Products for {selectedVendor.vendorName}</Typography>
+            {products.map((product) => (
+              <Box key={product.id} sx={{ padding: '8px', borderBottom: '1px solid #ddd' }}>
+                <Typography variant="body1">{product.name}</Typography>
+                <Typography variant="body2" color="textSecondary">
+                  ${product.salePrice}
+                </Typography>
+              </Box>
+            ))}
           </>
         ) : (
           <Typography variant="h6">Select a vendor to view details</Typography>
@@ -429,14 +458,19 @@ const DataEntryOperatorPage = () => {
           <Button onClick={handleProductSubmit}>Add</Button>
         </DialogActions>
       </Dialog>
+
+      {selectedVendor && (
+        <Fab
+          color="primary"
+          aria-label="add"
+          onClick={handleProductFormOpen}
+          sx={{ position: 'fixed', bottom: 16, right: 16 }}
+        >
+          <Add />
+        </Fab>
+      )}
     </div>
   );
 };
 
 export default DataEntryOperatorPage;
-
-
-
-
-
-

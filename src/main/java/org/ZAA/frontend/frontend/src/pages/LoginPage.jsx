@@ -74,6 +74,7 @@ const LoginPage = () => {
             navigate('/branchmanager');
             break;
           case 'cashier':
+            localStorage.setItem('cashier', JSON.stringify(response.data));
             navigate('/cashier');
             break;
           case 'dataentryoperator':
