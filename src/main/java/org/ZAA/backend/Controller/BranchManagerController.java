@@ -67,4 +67,22 @@ public class BranchManagerController {
 
         return branchManagers;
     }
+
+    //method to change branch manager password by email
+    public boolean changePassword(String email, String newPassword) {
+        String query = "UPDATE BranchManagers SET Password = ? WHERE Email = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, newPassword);
+            preparedStatement.setString(2, email);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 }

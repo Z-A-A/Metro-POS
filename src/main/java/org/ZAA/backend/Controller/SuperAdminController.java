@@ -35,7 +35,23 @@ public class SuperAdminController {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return superAdmins;
+    }
+
+    public static boolean changePassword(String email, String newPassword) {
+        String query = "UPDATE SuperAdmin SET Password = ? WHERE Email = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, newPassword);
+            preparedStatement.setString(2, email);
+
+            int rowsAffected = preparedStatement.executeUpdate();
+            return rowsAffected > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

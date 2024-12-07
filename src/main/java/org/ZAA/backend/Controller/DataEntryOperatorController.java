@@ -17,7 +17,7 @@ public class DataEntryOperatorController {
     private static final String DB_PASSWORD = "Cr68DxeLq2";
 
     // Method to add a data entry operator to the database
-    public boolean addDataEntryOperator(DataEntryOperator dataEntryOperator) {
+    public static boolean addDataEntryOperator(DataEntryOperator dataEntryOperator) {
         String query = "INSERT INTO DataEntryOperator (Name, EmployeeNo, Email, Password, BranchCode, Salary) VALUES (?, ?, ?, ?, ?, ?)";
 
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
@@ -62,5 +62,22 @@ public class DataEntryOperatorController {
         }
 
         return dataEntryOperators;
+    }
+
+    public boolean changePassword(String email, String newPassword) {
+        String query = "UPDATE DataEntryOperator SET Password = ? WHERE Email = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, newPassword);
+            preparedStatement.setString(2, email);
+
+            preparedStatement.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }

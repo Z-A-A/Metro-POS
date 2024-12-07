@@ -17,8 +17,8 @@ public class ProductController {
     private static final String DB_PASSWORD = "Cr68DxeLq2";
 
     // Method to add a product to the database
-    public boolean addProduct(Product product) {
-        String query = "INSERT INTO Products (ProductName, Category, OriginalPrice, SalePrice, PricePerUnit, PricePerCarton, VendorID, CurrentStock, ProductImagePath, IsActive) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+    public static boolean addProduct(Product product) {
+        String query = "INSERT INTO Products (ProductName, Category, OriginalPrice, SalePrice, PricePerUnit, PricePerCarton, VendorID, CurrentStock, ProductImagePath, IsActive, BranchCode) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?)";
 
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
              PreparedStatement preparedStatement = connection.prepareStatement(query)) {
@@ -29,10 +29,11 @@ public class ProductController {
             preparedStatement.setDouble(4, product.getSalePrice());
             preparedStatement.setDouble(5, product.getPricebyUnit());
             preparedStatement.setDouble(6, product.getPricebyCarton());
-            preparedStatement.setInt(7, product.getVendorName());
+            preparedStatement.setInt(7, product.getVendorId());
             preparedStatement.setInt(8, product.getQuantity());
             preparedStatement.setString(9, product.getImagePath());
             preparedStatement.setBoolean(10, true);
+            preparedStatement.setString(11, product.getBranchCode());
 
             int rowsAffected = preparedStatement.executeUpdate();
             return rowsAffected > 0;
@@ -52,20 +53,19 @@ public class ProductController {
              ResultSet resultSet = preparedStatement.executeQuery()) {
 
             while (resultSet.next()) {
-                Product product = new Product(
-                        resultSet.getInt("ProductID"),
-                        resultSet.getString("ProductName"),
-                        resultSet.getDouble("OriginalPrice"),
-                        resultSet.getDouble("SalePrice"),
-                        resultSet.getDouble("PricePerUnit"),
-                        resultSet.getDouble("PricePerCarton"),
-                        resultSet.getString("Category"),
-                        resultSet.getString("Description"),
-                        resultSet.getString("BranchCode"),
-                        resultSet.getInt("VendorID"),
-                        resultSet.getInt("CurrentStock"),
-                        resultSet.getString("ProductImagePath")
-                );
+                Product product = new Product();
+                product.setId(resultSet.getInt("ProductID"));
+                product.setName(resultSet.getString("ProductName"));
+                product.setCategory(resultSet.getString("Category"));
+                product.setOriginalPrice(resultSet.getDouble("OriginalPrice"));
+                product.setSalePrice(resultSet.getDouble("SalePrice"));
+                product.setPricebyUnit(resultSet.getDouble("PricePerUnit"));
+                product.setPricebyCarton(resultSet.getDouble("PricePerCarton"));
+                product.setVendorId(resultSet.getInt("VendorID"));
+                product.setQuantity(resultSet.getInt("CurrentStock"));
+                product.setImagePath(resultSet.getString("ProductImagePath"));
+                product.setBranchCode(resultSet.getString("BranchCode"));
+
                 products.add(product);
             }
         } catch (SQLException e) {
@@ -91,5 +91,70 @@ public class ProductController {
             e.printStackTrace();
             return false;
         }
+    }
+
+    public static List<Product> getProductByBranchCode(String branchCode) {
+        String query = "SELECT * FROM Products WHERE BranchCode = ?";
+        List<Product> products = new ArrayList<>();
+
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, branchCode);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                Product product = new Product();
+                product.setId(resultSet.getInt("ProductID"));
+                product.setName(resultSet.getString("ProductName"));
+                product.setCategory(resultSet.getString("Category"));
+                product.setOriginalPrice(resultSet.getDouble("OriginalPrice"));
+                product.setSalePrice(resultSet.getDouble("SalePrice"));
+                product.setPricebyUnit(resultSet.getDouble("PricePerUnit"));
+                product.setPricebyCarton(resultSet.getDouble("PricePerCarton"));
+                product.setVendorId(resultSet.getInt("VendorID"));
+                product.setQuantity(resultSet.getInt("CurrentStock"));
+                product.setImagePath(resultSet.getString("ProductImagePath"));
+
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
+    }
+
+    //create function to get product for certain vendor id and that vendor shoudl have specific branch code
+    public static List<Product> getProductByVendorId(int vendorId, String branchCode) {
+        String query = "SELECT * FROM Products WHERE VendorID = ? AND BranchCode = ?";
+        List<Product> products = new ArrayList<>();
+
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, vendorId);
+            preparedStatement.setString(2, branchCode);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                Product product = new Product();
+                product.setId(resultSet.getInt("ProductID"));
+                product.setName(resultSet.getString("ProductName"));
+                product.setCategory(resultSet.getString("Category"));
+                product.setOriginalPrice(resultSet.getDouble("OriginalPrice"));
+                product.setSalePrice(resultSet.getDouble("SalePrice"));
+                product.setPricebyUnit(resultSet.getDouble("PricePerUnit"));
+                product.setPricebyCarton(resultSet.getDouble("PricePerCarton"));
+                product.setVendorId(resultSet.getInt("VendorID"));
+                product.setQuantity(resultSet.getInt("CurrentStock"));
+                product.setImagePath(resultSet.getString("ProductImagePath"));
+                product.setBranchCode(resultSet.getString("BranchCode"));
+
+                products.add(product);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return products;
     }
 }
