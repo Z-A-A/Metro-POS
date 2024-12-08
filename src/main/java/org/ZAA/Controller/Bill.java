@@ -104,7 +104,6 @@ public class Bill
         // Add the bill to the database
         BillController billController = new BillController();
         billController.addBill(newBill);
-        //remove quantitites from the products table in database
 
         return newBill;
     }
@@ -123,6 +122,7 @@ public class Bill
 
         return products.stream().mapToDouble(Product::getSalePrice).sum();
     }
+
 
 
 }
