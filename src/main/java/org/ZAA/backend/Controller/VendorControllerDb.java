@@ -64,7 +64,7 @@ public class VendorControllerDb {
     }
 
     // Method to get a vendor by ID from the database
-    public Vendor getVendorById(int vendorID) {
+    public static Vendor getVendorById(int vendorID) {
         String query = "SELECT * FROM Vendors WHERE VendorID = ?";
         Vendor vendor = null;
 

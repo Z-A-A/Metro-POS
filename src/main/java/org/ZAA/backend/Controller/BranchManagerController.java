@@ -20,7 +20,7 @@ public class BranchManagerController {
     public boolean addBranchManager(BranchManager branchManager) {
         String query = "INSERT INTO BranchManagers (Name, EmployeeNo, Email, Password, BranchCode, Salary) VALUES (?, ?, ?, ?, ?, ?)";
         BranchController branchController = new BranchController();
-        if(branchController.checkBranchCode(branchManager.getBranchCode())){
+        if(!branchController.checkBranchCode(branchManager.getBranchCode())){
             return false;
         }
 
