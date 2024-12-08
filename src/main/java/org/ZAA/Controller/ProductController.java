@@ -80,6 +80,15 @@ public class ProductController {
         return null;
     }
 
+    @PostMapping("/updateProductQuantity")
+    public Boolean updateProductQuantity(@RequestParam int id, @RequestParam int quantity) {
+        // Update the product quantity in the database
+       // Product updatedProduct = org.ZAA.backend.Controller.ProductController.updateProductQuantity(id, quantity);
+       // System.out.println("PRODUCT QUANTITY UPDATED SUCCESSFULLY: " + updatedProduct.getName());
+        //BOOLEAN HANDLE KR LENA DB SAY
+
+        return false;
+    }
 
 
 }
