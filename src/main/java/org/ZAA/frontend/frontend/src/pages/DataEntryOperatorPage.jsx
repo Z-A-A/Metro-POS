@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { Box, Button, Typography, InputBase, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Fab } from '@mui/material';
+import { Box, Button, Typography, InputBase, Dialog, DialogActions, DialogContent, DialogTitle, TextField, Fab, Card, CardContent, CardMedia, Grid2 } from '@mui/material';
 import { Add, Delete, Search } from '@mui/icons-material';
 import axios from 'axios';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+
 
 // Define Sidebar and SearchBar components
 const Sidebar = ({ children }) => (
@@ -46,8 +47,9 @@ const DataEntryOperatorPage = () => {
     category: '',
     description: '',
     branchCode: '',
-    vendorCode: '',
-    quantity: ''
+    vendorId: '',
+    quantity: '',
+    image: null
   });
   const [success, setSuccess] = useState('');
   const [error, setError] = useState('');
@@ -127,14 +129,21 @@ const DataEntryOperatorPage = () => {
     });
   };
 
+  const handleImageChange = (e) => {
+    setProductFormData({
+      ...productFormData,
+      image: e.target.files[0]
+    });
+  };
+
   const validateForm = () => {
     const { vendorID, vendorName, vendorAddress, vendorPhone, branchCode } = formData;
     return vendorID && vendorName && vendorAddress && vendorPhone && branchCode;
   };
 
   const validateProductForm = () => {
-    const { id, name, originalPrice, salePrice, priceByUnit, priceByCarton, category, description, branchCode, vendorCode, quantity } = productFormData;
-    return id && name && originalPrice && salePrice && priceByUnit && priceByCarton && category && description && branchCode && vendorCode && quantity;
+    const { id, name, originalPrice, salePrice, priceByUnit, priceByCarton, category, description, branchCode, vendorId, quantity, image } = productFormData;
+    return id && name && originalPrice && salePrice && priceByUnit && priceByCarton && category && description && branchCode && vendorId && quantity && image;
   };
 
   const handleSubmit = async (e) => {
@@ -187,23 +196,27 @@ const DataEntryOperatorPage = () => {
     }
   
     try {
-      const params = new URLSearchParams({
-        id: parseInt(productFormData.id, 10), // Ensure id is an integer
-        name: productFormData.name,
-        originalPrice: parseFloat(productFormData.originalPrice),
-        salePrice: parseFloat(productFormData.salePrice),
-        priceByUnit: parseFloat(productFormData.priceByUnit),
-        priceByCarton: parseFloat(productFormData.priceByCarton),
-        category: productFormData.category,
-        description: productFormData.description,
-        branchCode: productFormData.branchCode,
-        vendorCode: productFormData.vendorCode,
-        quantity: parseInt(productFormData.quantity, 10)
+      const formData = new FormData();
+      formData.append('id', parseInt(productFormData.id, 10));
+      formData.append('name', productFormData.name);
+      formData.append('originalPrice', parseFloat(productFormData.originalPrice));
+      formData.append('salePrice', parseFloat(productFormData.salePrice));
+      formData.append('priceByUnit', parseFloat(productFormData.priceByUnit));
+      formData.append('priceByCarton', parseFloat(productFormData.priceByCarton));
+      formData.append('category', productFormData.category);
+      formData.append('description', productFormData.description);
+      formData.append('branchCode', productFormData.branchCode);
+      formData.append('vendorId', parseInt(productFormData.vendorId, 10));
+      formData.append('quantity', parseInt(productFormData.quantity, 10));
+      formData.append('image', productFormData.image);
+  
+      console.log('Sending product data:', formData);
+  
+      const response = await axios.post('/api/products/createProduct', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
       });
-  
-      console.log('Sending product data:', params.toString());
-  
-      const response = await axios.post(`/api/products/createProduct?${params.toString()}`);
   
       if (response.data) {
         console.log('Product created successfully:', response.data);
@@ -220,8 +233,9 @@ const DataEntryOperatorPage = () => {
             category: '',
             description: '',
             branchCode: '',
-            vendorCode: '',
-            quantity: ''
+            vendorId: '',
+            quantity: '',
+            image: null
           });
         }, 1500);
       }
@@ -233,7 +247,8 @@ const DataEntryOperatorPage = () => {
 
   return (
     <div>
-      <Sidebar>
+    <Box sx={{display:'flex', height:'100vh'}}>
+      <Sidebar sx={{height:'100vh'}}>
         <SearchBar>
           <Search sx={{ color: '#9e9e9e', marginRight: '8px' }} />
           <InputBase placeholder="Search Vendors..." fullWidth />
@@ -256,23 +271,36 @@ const DataEntryOperatorPage = () => {
         </Box>
       </Sidebar>
 
-      {/* Content */}
-      <Box sx={{ padding: '16px' }}>
+      {/*Main Content */}
+      <Box sx={{ flex:1, padding: '16px' }}>
         {selectedVendor ? (
           <>
             <Typography variant="h6">Products for {selectedVendor.vendorName}</Typography>
-            {products.map((product) => (
-              <Box key={product.id} sx={{ padding: '8px', borderBottom: '1px solid #ddd' }}>
-                <Typography variant="body1">{product.name}</Typography>
-                <Typography variant="body2" color="textSecondary">
-                  ${product.salePrice}
-                </Typography>
-              </Box>
-            ))}
+            <Grid2 container spacing={2} sx={{ mt: 2 }}>
+              {products.map((product) => (
+                <Grid2 item="true" xs={4} key={product.id}>
+                  <Card sx={{ width: 200, height: 300, display: 'flex', flexDirection: 'column' }}>
+                    <CardMedia
+                      component="img"
+                      height="140"
+                      image={product.image ? `data:image/jpeg;base64,${product.image}` : 'placeholder.jpg'}
+                      alt={product.name}
+                      sx={{ objectFit: 'cover' }}
+                    />
+                    <CardContent sx={{ flexGrow: 1 }}>
+                      <Typography variant="body1" sx={{ fontWeight: 'bold' }}>{product.name}</Typography>
+                      <Typography variant="body2" sx={{ fontWeight: 'bold' }}>${product.salePrice}</Typography>
+                      <Typography variant="body2">Stock: {product.quantity}</Typography>
+                    </CardContent>
+                  </Card>
+                </Grid2>
+              ))}
+            </Grid2>
           </>
         ) : (
           <Typography variant="h6">Select a vendor to view details</Typography>
         )}
+      </Box>
       </Box>
 
       {/* Add Vendor Dialog */}
@@ -434,12 +462,12 @@ const DataEntryOperatorPage = () => {
           />
           <TextField
             margin="dense"
-            name="vendorCode"
-            label="Vendor Code"
-            type="text"
+            name="vendorId"
+            label="Vendor ID"
+            type="number"
             fullWidth
             variant="standard"
-            value={productFormData.vendorCode}
+            value={productFormData.vendorId}
             onChange={handleProductFormChange}
           />
           <TextField
@@ -452,6 +480,25 @@ const DataEntryOperatorPage = () => {
             value={productFormData.quantity}
             onChange={handleProductFormChange}
           />
+          <Box sx={{ mt: 2, mb: 1 }}>
+            <input
+              accept="image/*"
+              style={{ display: 'none' }}
+              id="product-image-upload"
+              type="file"
+              onChange={handleImageChange}
+            />
+            <label htmlFor="product-image-upload">
+              <Button
+                variant="outlined"
+                component="span"
+                startIcon={<CloudUploadIcon />}
+                fullWidth
+              >
+                Upload Product Image
+              </Button>
+            </label>
+          </Box>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleProductFormClose}>Cancel</Button>
