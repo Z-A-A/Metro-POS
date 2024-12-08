@@ -136,7 +136,7 @@ public class ProductController {
             preparedStatement.setString(2, branchCode);
             ResultSet resultSet = preparedStatement.executeQuery();
 
-            if (resultSet.next()) {
+            while (resultSet.next()) {
                 Product product = new Product();
                 product.setId(resultSet.getInt("ProductID"));
                 product.setName(resultSet.getString("ProductName"));
