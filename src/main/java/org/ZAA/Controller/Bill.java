@@ -98,6 +98,8 @@ public class Bill
         newBill.setBillNumber(generateBillNumber());
         newBill.setDate(getCurrentDate());
         newBill.setTotalAmount(calculateTotalAmount(products));
+        double tax = 0.17 * newBill.getTotalAmount();
+        newBill.setTotalAmount(newBill.getTotalAmount() + tax);
         newBill.setCashierName(getCashierName());
         newBill.setCashierName(cashierName);
 
