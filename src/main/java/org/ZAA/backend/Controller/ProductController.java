@@ -76,7 +76,7 @@ public class ProductController {
     }
 
     //function to update product stock
-    public boolean updateProductStock(int productID, int newStock) {
+    public static boolean updateProductStock(int productID, int newStock) {
         String query = "UPDATE Products SET CurrentStock = ? WHERE ProductID = ?";
 
         try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
