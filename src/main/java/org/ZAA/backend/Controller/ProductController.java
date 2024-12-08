@@ -157,4 +157,40 @@ public class ProductController {
         }
         return products;
     }
+
+    public static Product getProductById(int productId) {
+        String query = "SELECT * FROM Products WHERE ProductID = ?";
+        Product product = new Product();
+
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, productId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                product.setId(resultSet.getInt("ProductID"));
+                product.setName(resultSet.getString("ProductName"));
+                product.setCategory(resultSet.getString("Category"));
+                product.setOriginalPrice(resultSet.getDouble("OriginalPrice"));
+                product.setSalePrice(resultSet.getDouble("SalePrice"));
+                product.setPricebyUnit(resultSet.getDouble("PricePerUnit"));
+                product.setPricebyCarton(resultSet.getDouble("PricePerCarton"));
+                product.setVendorId(resultSet.getInt("VendorID"));
+                product.setQuantity(resultSet.getInt("CurrentStock"));
+                product.setImagePath(resultSet.getString("ProductImagePath"));
+                product.setBranchCode(resultSet.getString("BranchCode"));
+
+                return product;
+            }
+            else {
+                return null;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+
+        }
+
+    }
 }
