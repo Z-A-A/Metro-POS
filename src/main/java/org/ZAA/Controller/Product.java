@@ -1,5 +1,8 @@
 package org.ZAA.Controller;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
+
 public class Product {
     private int id;
     private String name;
@@ -32,6 +35,10 @@ public class Product {
         this.image = image; // Initialize the new field
         this.imagePath = imagePath; // Remove this line
     }
+
+
+    @JsonIgnore
+    private AdminDashboard adminDashboard;
 
     public Product() {
     }

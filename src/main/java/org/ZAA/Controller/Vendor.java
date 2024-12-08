@@ -3,6 +3,8 @@ package org.ZAA.Controller;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.stereotype.Component;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 
 @Component
 public class Vendor
@@ -12,6 +14,10 @@ public class Vendor
     private String vendorAddress;
     private String vendorPhone;
     private String branchCode;
+
+    @JsonIgnore
+    private AdminDashboard adminDashboard;
+
 
     public Vendor()
     {
