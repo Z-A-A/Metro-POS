@@ -85,4 +85,28 @@ public class BranchManagerController {
             return false;
         }
     }
+    public static BranchManager isValidBranchManager(String email, String password) {
+        String query = "SELECT * FROM BranchManagers WHERE Email = ? AND Password = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, password);
+
+            ResultSet resultSet = preparedStatement.executeQuery();
+            if(resultSet.next()){
+                return new BranchManager(
+                        resultSet.getString("Name"),
+                        resultSet.getInt("EmployeeNo"),
+                        resultSet.getString("Email"),
+                        resultSet.getString("BranchCode"),
+                        resultSet.getDouble("Salary")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

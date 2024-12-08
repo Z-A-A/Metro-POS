@@ -27,7 +27,7 @@ const StyledTextField = styled(TextField)({
 
 const LoginPage = () => {
   const location = useLocation();
-  const role = location.state?.role || 'user'; // Default to 'user' if no role is provided
+  const role = location.state?.role || 'superadmin'; 
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
@@ -75,6 +75,7 @@ const LoginPage = () => {
             break;
           case 'cashier':
             localStorage.setItem('cashier', JSON.stringify(response.data));
+            console.log('Cashier data:', response.data);
             navigate('/cashier');
             break;
           case 'dataentryoperator':

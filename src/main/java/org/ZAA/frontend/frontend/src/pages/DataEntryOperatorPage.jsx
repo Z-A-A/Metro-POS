@@ -4,6 +4,7 @@ import { Add, Delete, Search } from '@mui/icons-material';
 import axios from 'axios';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import ChangePasswordModal from '../components/ChangePasswordModal';
+import SplashScreen from './SplashScreen';
 
 
 // Define Sidebar and SearchBar components
@@ -31,7 +32,7 @@ const DataEntryOperatorPage = () => {
   const [products, setProducts] = useState([]);
   const [open, setOpen] = useState(false);
   const [productFormOpen, setProductFormOpen] = useState(false);
-  const [newQantity, setNewQuantity] = useState('');
+  const [loading, setLoading] = useState(true);
   const [formData, setFormData] = useState({
     vendorID: '',
     vendorName: '',
@@ -57,7 +58,11 @@ const DataEntryOperatorPage = () => {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    fetchVendors();
+    
+    setTimeout(() => {
+      fetchVendors();
+      setLoading(false); 
+    }, 2000);
   }, []);
 
   const fetchVendors = async () => {
@@ -299,6 +304,7 @@ const DataEntryOperatorPage = () => {
 
   return (
     <div>
+      {loading? ( <SplashScreen /> ) : (
     <Box sx={{display:'flex', height:'100vh'}}>
       <Sidebar sx={{height:'100vh'}}>
         <SearchBar>
@@ -365,6 +371,7 @@ const DataEntryOperatorPage = () => {
         )}
       </Box>
       </Box>
+      )}
 
       {/* Add Vendor Dialog */}
       <Dialog open={open} onClose={handleClose}>

@@ -40,10 +40,13 @@ const CashierPage = () => {
 
   const fetchProducts = async () => {
     try {
+     
       const cashier = JSON.parse(localStorage.getItem("cashier"));
       if (!cashier || !cashier.branchCode) {
         throw new Error("No branch code found");
+        console.log(cashier);
       }
+     
 
       const response = await axios.post("/api/products/getProductByBranchCode", null, {
         params: {
@@ -126,7 +129,7 @@ const CashierPage = () => {
       });
 
       console.log("Bill generated:", response.data);
-      // Handle successful bill generation (e.g., show a success message, clear the cart, etc.)
+    
       setCart([]);
       alert("Bill generated successfully!");
 

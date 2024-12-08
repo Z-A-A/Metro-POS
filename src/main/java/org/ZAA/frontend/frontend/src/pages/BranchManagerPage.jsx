@@ -9,7 +9,7 @@ import ChangePasswordModal from '../components/ChangePasswordModal';
 import StaffRegistrationModal from '../components/StaffRegistrationModal';
 import { useNavigate } from 'react-router-dom';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import GenerateReport from '../components/generateReport'; // Import the report generation function
+import GenerateReport from '../components/generateReport'; 
 
 const darkTheme = createTheme({
   palette: {

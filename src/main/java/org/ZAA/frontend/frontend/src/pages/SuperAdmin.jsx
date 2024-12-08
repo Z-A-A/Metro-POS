@@ -12,6 +12,7 @@ import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import DashboardIcon from '@mui/icons-material/Dashboard'; 
 import LockIcon from '@mui/icons-material/Lock';
 import StaffRegistrationModal from '../components/StaffRegistrationModal';
+import BranchCreationModal from '../components/BranchCreationModal';
 
 
 // Theme Configuration matching your Dashboard theme
@@ -48,6 +49,8 @@ const SuperAdmin = () => {
     const [oldPassword, setOldPassword] = useState('');
     const [newPassword, setNewPassword] = useState('');
     const [error, setError] = useState('');
+    const [open, setOpen] = useState(false);
+    const [branchOpen, setBranchOpen] = useState(false);
     
     const handleDashboardClick = () => {
       navigate('/dashboard'); // Adjust the path to match your route configuration
@@ -95,7 +98,17 @@ const SuperAdmin = () => {
     setSelectedRole(role);
     setModalOpen(true);
   };
+  const handleBranchOpen = () => {
+    setBranchOpen(true);
+  };
 
+  const handleBranchClose = () => {
+    setBranchOpen(false);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
     <ThemeProvider theme={darkTheme}>
       <Box
@@ -137,6 +150,28 @@ const SuperAdmin = () => {
             gap: '20px',
           }}
         >
+          <StyledButton
+          variants={buttonVariants}
+          whileHover="hover"
+          whileTap={{ scale: 0.95 }}
+        >
+          <Button
+            variant="contained"
+            fullWidth
+            startIcon={<WorkIcon />}
+            onClick={handleBranchOpen}
+            sx={{
+              backgroundColor: '#FFD700',
+              color: '#001F54',
+              padding: '15px 30px',
+              '&:hover': {
+                backgroundColor: '#FFE55C',
+              },
+            }}
+          >
+            Create Branch
+          </Button>
+        </StyledButton>
           <StyledButton
             variants={buttonVariants}
             whileHover="hover"
@@ -233,6 +268,8 @@ const SuperAdmin = () => {
             handleClose={() => setModalOpen(false)}
             staffRole={selectedRole}
             />
+            <BranchCreationModal open={branchOpen}
+             handleClose={handleBranchClose} />
         </Box>
       </Box>
     </ThemeProvider>

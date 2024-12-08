@@ -60,8 +60,7 @@ public class SuperAdmin
     @PostMapping("/createBranch")
     public boolean createBranch(@RequestParam String branchCode, @RequestParam String name, @RequestParam String city, @RequestParam Boolean isActive, @RequestParam String address, @RequestParam String phone) {
         Branch newBranch = new Branch(branchCode, name, city, isActive, address, phone);
-        BranchManagement newBranchManagement = new BranchManagement(newBranch);
-        mainController.getBranches().add(newBranchManagement);
+
         //UPDATE IN DB HERE
         BranchController branchController = new BranchController();
         boolean isAdded = branchController.addBranch(newBranch);

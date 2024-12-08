@@ -80,4 +80,31 @@ public class DataEntryOperatorController {
             return false;
         }
     }
+    public static DataEntryOperator getDataEntryOperator(String email, String password) {
+        String query = "SELECT * FROM DataEntryOperator WHERE Email = ? AND Password = ?";
+
+        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
+             PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setString(1, email);
+            preparedStatement.setString(2, password);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new DataEntryOperator(
+                            resultSet.getString("Name"),
+                            resultSet.getInt("EmployeeNo"),
+                            resultSet.getString("Email"),
+                            resultSet.getString("BranchCode"),
+                            resultSet.getDouble("Salary")
+                    );
+                } else {
+                    return null;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
 }

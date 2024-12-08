@@ -99,51 +99,63 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
 
     @GetMapping("/login/superadmin")
     public SuperAdmin loginSuperAdmin(@RequestParam String email, @RequestParam String password) {
-        for (SuperAdmin superAdmin : superAdmins)
+        SuperAdmin superAdmin = null;
+        superAdmin=SuperAdminController.getSuperAdmin(email,password);
+        if(superAdmin == null)
         {
-            if (superAdmin.getEmail().equals(email) && superAdmin.getPassword().equals(password)) {
-                System.out.println("SUPER ADMIN LOGIN SUCCESSFUL");
-                return superAdmin;
-            }
+            System.out.println("SUPER ADMIN LOGIN FAILED");
+            return null;
         }
-        System.out.println("SUPER ADMIN LOGIN FAILED");
-        return null;
+        else
+        {
+            System.out.println("SUPER ADMIN LOGIN SUCCESSFUL");
+            return superAdmin;
+        }
     }
 
     @GetMapping("/login/admin")
     public BranchManager loginAdmin(@RequestParam String email, @RequestParam String password) {
-        for (BranchManager admin : admins) {
-            if (admin.getEmail().equals(email) && admin.getPassword().equals(password)) {
-                System.out.println("BRANCH MANAGER LOGIN SUCCESSFUL");
-                return admin;
-            }
+        BranchManager branchManager = null;
+        branchManager=BranchManagerController.isValidBranchManager(email,password);
+        if(branchManager == null)
+        {
+            System.out.println("BRANCH MANAGER LOGIN FAILED");
+            return null;
         }
-        System.out.println("BRANCH MANAGER LOGIN FAILED");
-        return null;
+        else
+        {
+            System.out.println("BRANCH MANAGER LOGIN SUCCESSFUL");
+            return branchManager;
+        }
     }
 
     @GetMapping("/login/cashier")
     public Cashier loginCashier(@RequestParam String email, @RequestParam String password) {
-        for (Cashier cashier : cashiers) {
-            if (cashier.getEmail().equals(email) && cashier.getPassword().equals(password)) {
-                System.out.println("CASHIER LOGIN SUCCESSFUL");
-                return cashier;
-            }
+        Cashier cashier = null;
+        cashier=CashierController.getCashier(email,password);
+        if(cashier == null)
+        {
+            System.out.println("CASHIER LOGIN FAILED");
+            return null;
         }
-        System.out.println("CASHIER LOGIN FAILED");
-        return null;
+        else
+        {
+            System.out.println("CASHIER LOGIN SUCCESSFUL");
+            return cashier;
+        }
     }
 
     @GetMapping("/login/dataentryoperator")
     public DataEntryOperator loginDataEntryOperator(@RequestParam String email, @RequestParam String password) {
-        for (DataEntryOperator dataEntryOperator : dataEntryOperators) {
-            if (dataEntryOperator.getEmail().equals(email) && dataEntryOperator.getPassword().equals(password)) {
-                System.out.println("DATA ENTRY OPERATOR LOGIN SUCCESSFUL");
-                return dataEntryOperator;
-            }
+        DataEntryOperator dataEntryOperator = null;
+        dataEntryOperator = DataEntryOperatorController.getDataEntryOperator(email, password);
+        if (dataEntryOperator == null) {
+            System.out.println("DATA ENTRY OPERATOR LOGIN FAILED");
+            return null;
+        } else {
+            System.out.println("DATA ENTRY OPERATOR LOGIN SUCCESSFUL");
+            return dataEntryOperator;
         }
-        System.out.println("DATA ENTRY OPERATOR LOGIN FAILED");
-        return null;
     }
 
     //SIGN UP METHODS FOR GUI.
