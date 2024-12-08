@@ -46,7 +46,7 @@ const LoginPage = () => {
           apiEndpoint = '/api/login/superadmin';
           break;
         case 'branchmanager':
-          apiEndpoint = '/api/login/branchmanager';
+          apiEndpoint = '/api/login/admin';
           break;
         case 'cashier':
           apiEndpoint = '/api/login/cashier';

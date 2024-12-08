@@ -1,12 +1,16 @@
-import React from 'react';
-import { useState } from 'react';
-import { Box, Button, Typography, createTheme, ThemeProvider } from '@mui/material';
+import React from 'react'
+import {  useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { Box, Button, Typography, createTheme, ThemeProvider, Dialog, DialogActions, DialogContent, DialogTitle, TextField, IconButton } from '@mui/material';
+import axios from 'axios';
+import ChangePasswordModal from '../components/ChangePasswordModal';
 import { motion } from 'framer-motion';
 import { styled } from '@mui/system';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import WorkIcon from '@mui/icons-material/Work';
 import PointOfSaleIcon from '@mui/icons-material/PointOfSale';
 import DashboardIcon from '@mui/icons-material/Dashboard'; 
+import LockIcon from '@mui/icons-material/Lock';
 import StaffRegistrationModal from '../components/StaffRegistrationModal';
 
 
@@ -34,10 +38,49 @@ const StyledButton = styled(motion.div)({
   width: '300px',
 });
 
+
 const SuperAdmin = () => {
     const [modalOpen, setModalOpen] = useState(false);
     const [selectedRole, setSelectedRole] = useState('');
+    const navigate = useNavigate();
+    const [changePasswordOpen, setChangePasswordOpen] = useState(false);
+    const [email, setEmail] = useState('');
+    const [oldPassword, setOldPassword] = useState('');
+    const [newPassword, setNewPassword] = useState('');
+    const [error, setError] = useState('');
     
+    const handleDashboardClick = () => {
+      navigate('/dashboard'); // Adjust the path to match your route configuration
+    };
+    const handleChangePasswordOpen = () => {
+      setChangePasswordOpen(true);
+    };
+  
+    const handleChangePasswordClose = () => {
+      setChangePasswordOpen(false);
+    };
+  
+    const handleChangePasswordSubmit = async () => {
+      try {
+        const response = await axios.post('/api/changePassword/superadmin', null, {
+          params: {
+            email,
+            oldPassword,
+            newPassword,
+          },
+        });
+  
+        if (response.data) {
+          alert('Password changed successfully!');
+          handleChangePasswordClose();
+        } else {
+          setError('Failed to change password. Please check your credentials.');
+        }
+      } catch (error) {
+        console.error('Error changing password:', error);
+        setError('Failed to change password. Please try again later.');
+      }
+    };
 
   const buttonVariants = {
     hover: {
@@ -65,6 +108,10 @@ const SuperAdmin = () => {
           alignItems: 'center',
         }}
       >
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 2 }}>
+        <ChangePasswordModal role="superadmin" /> 
+        </Box>
+
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
@@ -176,6 +223,7 @@ const SuperAdmin = () => {
                   backgroundColor: '#FFE55C',
                 },
               }}
+              onClick={handleDashboardClick}
             >
               Dashboard
             </Button>

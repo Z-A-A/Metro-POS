@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Box,
-  Grid,
+  Grid2,
   TextField,
   Card,
   CardContent,
@@ -16,6 +16,8 @@ import {
   Paper,
 } from "@mui/material";
 import SplashScreen from "./SplashScreen"
+import ReceiptModal from "../components/ReceiptModal"
+import ChangePasswordModal from "../components/ChangePasswordModal";
 
 const CashierPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -23,6 +25,9 @@ const CashierPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [receiptOpen, setReceiptOpen] = useState(false);
+  const [receiptData, setReceiptData] = useState(null);
+
 
   useEffect(() => {
     // Set a timeout to control the duration of the splash screen
@@ -75,9 +80,14 @@ const CashierPage = () => {
     setCart((prevCart) => {
       const existingProduct = prevCart.find((item) => item.id === product.id);
       if (existingProduct) {
+        if(existingProduct.quantity < product.quantity) {
         return prevCart.map((item) =>
           item.id === product.id ? { ...item, quantity: item.quantity + 1 } : item
         );
+        } else{
+          alert("Cannot add more than available quantity");
+          return prevCart;
+        }
       } else {
         return [...prevCart, { ...product, quantity: 1 }];
       }
@@ -87,15 +97,20 @@ const CashierPage = () => {
   const handleRemoveFromCart = (product) => {
     setCart((prevCart) => {
       const existingProduct = prevCart.find((item) => item.id === product.id);
-      if (existingProduct.quantity === 1) {
-        return prevCart.filter((item) => item.id !== product.id);
+      if (existingProduct) {
+        if (existingProduct.quantity === 1) {
+          return prevCart.filter((item) => item.id !== product.id);
+        } else {
+          return prevCart.map((item) =>
+            item.id === product.id ? { ...item, quantity: item.quantity - 1 } : item
+          );
+        }
       } else {
-        return prevCart.map((item) =>
-          item.id === product.id ? { ...item, quantity: item.quantity - 1 } : item
-        );
+        return prevCart;
       }
     });
   };
+
   const handleCheckout = async () => {
     try {
       const cashier = JSON.parse(localStorage.getItem("cashier"));
@@ -115,12 +130,30 @@ const CashierPage = () => {
       setCart([]);
       alert("Bill generated successfully!");
 
+      // Prepare receipt data
+      const receiptData = {
+        cashierName: cashier.name,
+        billNumber: response.data.billNumber,
+        date: new Date().toLocaleString(),
+        items: cart.map(item => ({
+          name: item.name,
+          quantity: item.quantity,
+          cost: item.salePrice * item.quantity
+        })),
+        totalBill: cart.reduce((total, item) => total + item.salePrice * item.quantity, 0),
+        gst: cart.reduce((total, item) => total + item.salePrice * item.quantity, 0) * 0.17
+      };
+
+      setReceiptData(receiptData);
+      setReceiptOpen(true);
+      console.log(cashier);
       fetchProducts();
     } catch (error) {
       console.error("Error generating bill:", error);
       setError("Failed to generate bill");
     }
   };
+  
 
   const filteredProducts = products.filter((product) =>
     product.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -129,18 +162,7 @@ const CashierPage = () => {
   const totalAmount = cart.reduce((total, item) => total + item.salePrice * item.quantity, 0);
 
   if (loading)
-    return (
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
-        }}
-      >
-        <Typography variant="h5">Loading...</Typography>
-      </Box>
-    );
+    return <SplashScreen />;
 
   if (error)
     return (
@@ -164,6 +186,8 @@ const CashierPage = () => {
         background: "linear-gradient(135deg, #f3f4f6, #e0e7ff)",
       }}
     >
+      
+
       {/* Product Search and List Section */}
       <Box
         sx={{
@@ -173,27 +197,43 @@ const CashierPage = () => {
           borderTopLeftRadius: "10px",
           borderBottomLeftRadius: "10px",
           boxShadow: "5px 0 10px rgba(0,0,0,0.1)",
+          display: "flex",
+          flexDirection: "column",
         }}
       >
-        <TextField
-          fullWidth
-          label="Search Products"
-          variant="outlined"
-          value={searchTerm}
-          onChange={handleSearchChange}
+        <Box sx={{ display: "flex", flexDirection: "row", alignItems: "center", p: 0, m: 0, width: '100%' }}>
+          <Box sx={{ display: 'flex', justifyContent: 'flex-start', p: 0 }}>
+            <ChangePasswordModal role="cashier" />
+          </Box>
+          <Box sx={{ flexGrow: 1, ml: 2 }}>
+            <TextField
+              fullWidth
+              label="Search Products"
+              variant="outlined"
+              value={searchTerm}
+              onChange={handleSearchChange}
+              sx={{
+                mb: 4,
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: "20px",
+                },
+              }}
+            />
+          </Box>
+        </Box>
+        <Box
           sx={{
-            mb: 4,
-            "& .MuiOutlinedInput-root": {
-              borderRadius: "20px",
-            },
+            flexGrow: 1,
+            overflow: "auto",
+            maxHeight: "calc(100vh - 150px)", // Adjust height to fit the screen
           }}
-        />
-        <Grid container spacing={4}>
+        >
+        <Grid2 container spacing={4}>
           {filteredProducts.map((product) => (
-            <Grid item xs={12} sm={6} md={4} key={product.id}>
+            <Grid2 item="true" xs={12} sm={6} md={4} key={product.id}>
               <Card
                 sx={{
-                  height: 290,
+                  height: 280,
                   display: "flex",
                   flexDirection: "column",
                   justifyContent: "space-between",
@@ -207,7 +247,7 @@ const CashierPage = () => {
               >
                 <CardMedia
                   component="img"
-                  height="120"
+                  height="90"
                   image={product.imageUrl || "placeholder.jpg"}
                   alt={product.name}
                   sx={{ borderRadius: "15px 15px 0 0" }}
@@ -245,9 +285,10 @@ const CashierPage = () => {
                   </Button>
                 </Box>
               </Card>
-            </Grid>
+            </Grid2>
           ))}
-        </Grid>
+        </Grid2>
+        </Box>
       </Box>
 
       {/* Cart Section */}
@@ -261,6 +302,7 @@ const CashierPage = () => {
           borderBottomRightRadius: "10px",
         }}
       >
+        
         <Typography variant="h6" gutterBottom>
           Shopping Cart
         </Typography>
@@ -304,6 +346,14 @@ const CashierPage = () => {
           Checkout
         </Button>
       </Box>
+       {/* Receipt Modal */}
+       {receiptData && (
+        <ReceiptModal
+          open={receiptOpen}
+          onClose={() => setReceiptOpen(false)}
+          receiptData={receiptData}
+        />
+      )}
     </Box>
   );
 };

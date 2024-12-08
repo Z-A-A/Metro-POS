@@ -3,6 +3,7 @@ import { Box, Button, Typography, InputBase, Dialog, DialogActions, DialogConten
 import { Add, Delete, Search } from '@mui/icons-material';
 import axios from 'axios';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+import ChangePasswordModal from '../components/ChangePasswordModal';
 
 
 // Define Sidebar and SearchBar components
@@ -30,6 +31,7 @@ const DataEntryOperatorPage = () => {
   const [products, setProducts] = useState([]);
   const [open, setOpen] = useState(false);
   const [productFormOpen, setProductFormOpen] = useState(false);
+  const [newQantity, setNewQuantity] = useState('');
   const [formData, setFormData] = useState({
     vendorID: '',
     vendorName: '',
@@ -112,6 +114,8 @@ const DataEntryOperatorPage = () => {
   const handleProductFormClose = () => {
     setProductFormOpen(false);
   };
+
+  
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -245,6 +249,54 @@ const DataEntryOperatorPage = () => {
     }
   };
 
+  const handleIncreaseQuantity = async (product) => {
+    try {
+      const newQuantity = product.quantity + 1;
+      const response = await axios.post('/api/products/updateProductQuantity', null, {
+        params: {
+          id: product.id,
+          quantity: newQuantity
+        }
+      });
+
+      if (response.data) {
+        setProducts((prevProducts) =>
+          prevProducts.map((p) =>
+            p.id === product.id ? { ...p, quantity: newQuantity } : p
+          )
+        );
+      }
+    } catch (error) {
+      console.error('Error updating product quantity:', error);
+    }
+  };
+
+  const handleDecreaseQuantity = async (product) => {
+    if (product.quantity > 0) {
+      try {
+        const newQuantity = product.quantity - 1;
+        const response = await axios.post('/api/products/updateProductQuantity', null, {
+          params: {
+            id: product.id,
+            quantity: newQuantity
+          }
+        });
+
+        if (response.data) {
+          setProducts((prevProducts) =>
+            prevProducts.map((p) =>
+              p.id === product.id ? { ...p, quantity: newQuantity } : p
+            )
+          );
+        }
+      } catch (error) {
+        console.error('Error updating product quantity:', error);
+      }
+    }
+  };
+
+
+
   return (
     <div>
     <Box sx={{display:'flex', height:'100vh'}}>
@@ -272,7 +324,10 @@ const DataEntryOperatorPage = () => {
       </Sidebar>
 
       {/*Main Content */}
-      <Box sx={{ flex:1, padding: '16px' }}>
+      <Box sx={{ flex:1, padding: '10px' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'flex-end', p: 0, m :0 }}>
+        <ChangePasswordModal role="dataentryoperator" />
+      </Box>
         {selectedVendor ? (
           <>
             <Typography variant="h6">Products for {selectedVendor.vendorName}</Typography>
@@ -291,6 +346,14 @@ const DataEntryOperatorPage = () => {
                       <Typography variant="body1" sx={{ fontWeight: 'bold' }}>{product.name}</Typography>
                       <Typography variant="body2" sx={{ fontWeight: 'bold' }}>${product.salePrice}</Typography>
                       <Typography variant="body2">Stock: {product.quantity}</Typography>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 2 }}>
+                        <Button variant="contained" color="primary" onClick={() => handleIncreaseQuantity(product)}>
+                          +
+                        </Button>
+                        <Button variant="contained" color="secondary" onClick={() => handleDecreaseQuantity(product)}>
+                          -
+                        </Button>
+                      </Box>
                     </CardContent>
                   </Card>
                 </Grid2>
@@ -521,3 +584,4 @@ const DataEntryOperatorPage = () => {
 };
 
 export default DataEntryOperatorPage;
+
