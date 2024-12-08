@@ -1,5 +1,6 @@
 package org.ZAA.Controller;
 
+import org.ZAA.backend.Controller.AdminDashboardDb;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.ZAA.backend.Controller.VendorControllerDb;
 import org.springframework.beans.factory.annotation.Value;
@@ -105,7 +106,8 @@ public class AdminDashboard
         AdminDashboard adminDashboard = new AdminDashboard();
         //adminDashboard = AdminControllerDb.getAdminDashboard();
         //DB INTERACTION HERE
-
-        return new AdminDashboard();
+        AdminDashboardDb adminDashboardDb = new AdminDashboardDb();
+        adminDashboard = adminDashboardDb.getAdminDashboard();
+        return adminDashboard;
     }
 }
