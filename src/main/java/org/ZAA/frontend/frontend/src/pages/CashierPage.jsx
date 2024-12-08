@@ -15,6 +15,7 @@ import {
   CardMedia,
   Paper,
 } from "@mui/material";
+import SplashScreen from "./SplashScreen"
 
 const CashierPage = () => {
   const [searchTerm, setSearchTerm] = useState("");
@@ -24,7 +25,12 @@ const CashierPage = () => {
   const [error, setError] = useState(null);
 
   useEffect(() => {
-    fetchProducts();
+    // Set a timeout to control the duration of the splash screen
+    const timer = setTimeout(() => {
+      fetchProducts();
+    }, 3000); // Adjust the duration as needed
+
+    return () => clearTimeout(timer);
   }, []);
 
   const fetchProducts = async () => {
@@ -39,12 +45,18 @@ const CashierPage = () => {
           branchCode: cashier.branchCode,
         },
       });
-
+      console.log("Raw product data:", response.data);
+      
+      if (!Array.isArray(response.data)) {
+        throw new Error("Expected an array of products");
+      }
       // Handle base64 image data directly
       const productsWithImages = response.data.map((product) => ({
         ...product,
         imageUrl: product.image ? `data:image/jpeg;base64,${product.image}` : null,
       }));
+
+      console.log("Products with images:", productsWithImages);
 
       setProducts(productsWithImages);
       setLoading(false);
@@ -83,6 +95,31 @@ const CashierPage = () => {
         );
       }
     });
+  };
+  const handleCheckout = async () => {
+    try {
+      const cashier = JSON.parse(localStorage.getItem("cashier"));
+      if (!cashier || !cashier.branchCode) {
+        throw new Error("No branch code found");
+      }
+
+      const response = await axios.post("/api/bills/generateBill", cart, {
+        params: {
+          branchCode: cashier.branchCode,
+          cashierName: cashier.name
+        },
+      });
+
+      console.log("Bill generated:", response.data);
+      // Handle successful bill generation (e.g., show a success message, clear the cart, etc.)
+      setCart([]);
+      alert("Bill generated successfully!");
+
+      fetchProducts();
+    } catch (error) {
+      console.error("Error generating bill:", error);
+      setError("Failed to generate bill");
+    }
   };
 
   const filteredProducts = products.filter((product) =>
@@ -262,6 +299,7 @@ const CashierPage = () => {
               background: "#059669",
             },
           }}
+          onClick={handleCheckout}
         >
           Checkout
         </Button>

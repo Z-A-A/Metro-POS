@@ -38,9 +38,8 @@ public class VendorController
         List<Vendor> vendors = vendorControllerDb.getAllVendors();
 //        List<Vendor> vendors = fetchAllVendors();
 //        System.out.println("VENDORS FETCHED SUCCESSFULLY");
-//        return vendors;
+        return vendors;
 
-        return null;
     }
 
 

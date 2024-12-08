@@ -36,6 +36,12 @@ public class Product {
     public Product() {
     }
 
+    public Product(int productID, String productName, double originalPrice, double salePrice, double pricePerUnit, double pricePerCarton, String category, String description, String branchCode, int vendorID, int currentStock, String productImagePath) {
+    }
+
+    public Product(int i, String product1, double v, double v1, double v2, double v3, String category1, String description1, String br001, String vendor1, int i1) {
+    }
+
     // Getters and setters for all fields, including the new image field
 
     public String getBranchCode() {

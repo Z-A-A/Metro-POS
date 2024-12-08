@@ -65,7 +65,7 @@ public class ProductController {
            product.setImage(imageData);
         }
        System.out.println("PRODUCTS FETCHED SUCCESSFULLY FOR BRANCH: " + branchCode);
-        return null;
+        return products;
     }
 
     @PostMapping("/getProductByVendorId")
@@ -75,9 +75,11 @@ public class ProductController {
         for (Product product : products) {
            byte[] imageData = loadImage(product.getImagePath());
            product.setImage(imageData);
+            System.out.println(product.getName());
         }
         System.out.println("PRODUCTS FETCHED SUCCESSFULLY FOR VENDOR: " + vendorId);
-        return null;
+
+        return products;
     }
 
 

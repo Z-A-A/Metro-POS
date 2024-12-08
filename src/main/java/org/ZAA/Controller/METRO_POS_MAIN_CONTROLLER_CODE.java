@@ -273,13 +273,14 @@ public class METRO_POS_MAIN_CONTROLLER_CODE
                     System.out.println("CASHIER PASSWORD CHANGED SUCCESSFULLY");
                     return true;
                 }
-                else
-                {
+                else {
                     System.out.println("CASHIER PASSWORD CHANGE FAILED");
                     return false;
+                }
 
             }
         }
+        return false;
     }
 
     @PostMapping("/changePassword/dataentryoperator")
