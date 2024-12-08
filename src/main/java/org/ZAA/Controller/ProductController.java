@@ -82,6 +82,21 @@ public class ProductController {
         return products;
     }
 
+     @PostMapping("/updateProductQuantity")
+    public Boolean updateProductQuantity(@RequestParam int id, @RequestParam int quantity) {
+        // Update the product quantity in the database
+        boolean isUpdated =org.ZAA.backend.Controller.ProductController.updateProductStock(id, quantity);
+        if(isUpdated)
+        {
+            System.out.println("PRODUCT QUANTITY UPDATED SUCCESSFULLY");
+            return true;
+        }
+        else{
+            System.out.println("PRODUCT QUANTITY NOT UPDATED SUCCESSFULLY");
+            return false;
+        }
+    }
+
 
 
 }
