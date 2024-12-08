@@ -12,7 +12,7 @@ import org.ZAA.Controller.AdminDashboard;
 import org.ZAA.Controller.Vendor;
 import org.ZAA.Controller.Product;
 
-public class AdminDashboardControllerDb {
+public class AdminDashboardDb {
 
     private static final String DB_URL = "jdbc:mysql://sql12.freesqldatabase.com:3306/sql12746761";
     private static final String DB_USER = "sql12746761";
