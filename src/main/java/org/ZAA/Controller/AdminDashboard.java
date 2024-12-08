@@ -22,8 +22,8 @@ public class AdminDashboard
     private double totalSalesOverall;
     private int productsSoldThisWeek;
     private double averageProductSaleValue;
-    private Map<Integer, Vendor> salesGraphByVendors;
-    private Map<Integer, Product> salesPieChartByProducts;
+    private Map<Double, Vendor> salesGraphByVendors;
+    private Map<Double, Product> salesPieChartByProducts;
     private int totalUniqueCustomers;
 
     public AdminDashboard()
@@ -75,19 +75,19 @@ public class AdminDashboard
         this.averageProductSaleValue = averageProductSaleValue;
     }
 
-    public Map<Integer, Vendor> getSalesGraphByVendors() {
+    public Map<Double, Vendor> getSalesGraphByVendors() {
         return salesGraphByVendors;
     }
 
-    public void setSalesGraphByVendors(Map<Integer, Vendor> salesGraphByVendors) {
+    public void setSalesGraphByVendors(Map<Double, Vendor> salesGraphByVendors) {
         this.salesGraphByVendors = salesGraphByVendors;
     }
 
-    public Map<Integer, Product> getSalesPieChartByProducts() {
+    public Map<Double, Product> getSalesPieChartByProducts() {
         return salesPieChartByProducts;
     }
 
-    public void setSalesPieChartByProducts(Map<Integer, Product> salesPieChartByProducts) {
+    public void setSalesPieChartByProducts(Map<Double, Product> salesPieChartByProducts) {
         this.salesPieChartByProducts = salesPieChartByProducts;
     }
 
